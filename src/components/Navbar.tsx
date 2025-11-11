@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion"; // <-- IMPORTADO 'Variants'
 
 // Ícones SVG embutidos para evitar dependências
 const MenuIcon = () => (
@@ -49,7 +49,8 @@ export const Navbar = () => {
   ];
 
   // Variantes para animação do menu mobile
-  const mobileMenuVariants = {
+  // ADICIONADO A TIPAGEM ': Variants'
+  const mobileMenuVariants: Variants = {
     open: { opacity: 1, y: 0, transition: { ease: "easeOut", duration: 0.3 } },
     closed: {
       opacity: 0,
@@ -106,7 +107,7 @@ export const Navbar = () => {
       <motion.div
         initial="closed"
         animate={isOpen ? "open" : "closed"}
-        variants={mobileMenuVariants}
+        variants={mobileMenuVariants} // Esta linha não deve mais dar erro
         className={`md:hidden absolute top-full left-0 w-full bg-white shadow-xl ${
           isOpen ? "block" : "hidden"
         }`}

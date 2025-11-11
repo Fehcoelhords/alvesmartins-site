@@ -1,22 +1,21 @@
 import { Hero } from "../components/Hero";
-// Importaremos os outros componentes (Services, About, etc.) aqui nos próximos milestones
+import { Services } from "../components/Services";
+import { About } from "../components/About";
+import { Stats } from "../components/Stats";
+import { Testimonials } from "../components/Testimonials";
+import { BlogPreview } from "../components/BlogPreview"; // Importado M4
+import { ContactForm } from "../components/ContactForm"; // Importado M4
 
 export const Home = () => {
   return (
     <main>
       <Hero />
-      {/* <Services />
-        <About />
-        <Stats />
-        <Testimonials />
-        <BlogPreview />
-        <ContactForm /> 
-      */}
-      <div className="h-96 bg-white flex items-center justify-center">
-        <h2 className="text-3xl text-gray-400">
-          Conteúdo (Milestones 2-4) virá aqui.
-        </h2>
-      </div>
+      <Services />
+      <About />
+      <Stats />
+      <Testimonials />
+      <BlogPreview /> {/* Adicionado M4 */}
+      <ContactForm /> {/* Adicionado M4 */}
     </main>
   );
 };
