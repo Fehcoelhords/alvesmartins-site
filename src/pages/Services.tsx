@@ -1,7 +1,9 @@
-import { motion, Variants } from "framer-motion";
+import { motion, Variants, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
+import React, { useRef } from "react";
+import { CallToAction } from "../components/CallToAction"; // <-- IMPORTADO O CTA
 
-// Ícone de Check para os itens de serviço
+// --- Ícones (Sem alteração) ---
 const CheckIcon = () => (
   <svg
     className="w-5 h-5 text-primary mr-3 flex-shrink-0"
@@ -15,10 +17,73 @@ const CheckIcon = () => (
     ></path>
   </svg>
 );
+const BuildingIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="w-16 h-16 mb-4 text-white"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M3.75 21h16.5M4.5 3.75v16.5h15V3.75M8.25 3.75h7.5v16.5h-7.5V3.75Z"
+    />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M12 16.5h.008v.008H12v-.008Zm0-3h.008v.008H12v-.008Zm0-3h.008v.008H12V10.5Zm0-3h.008v.008H12V7.5Z"
+    />
+  </svg>
+);
+const RulerIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="w-16 h-16 mb-4 text-white"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M4.5 3.75v16.5M19.5 3.75v16.5M8.25 3.75h7.5m-7.5 4.5h7.5m-7.5 4.5h7.5m-7.5 4.5h7.5"
+    />
+  </svg>
+);
+const SearchIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="w-16 h-16 mb-4 text-white"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+    />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 7.5v6m3-3h-6" />
+  </svg>
+);
 
-// Dados dos serviços (com placeholders de imagem)
-const detailedServices = [
+// --- Tipos e Dados (Sem alteração) ---
+interface ServiceItem {
+  icon: JSX.Element;
+  title: string;
+  description: string;
+  items: string[];
+  path: string;
+  image: string;
+}
+const detailedServices: ServiceItem[] = [
   {
+    icon: <RulerIcon />,
     title: "Perícia Avaliatória de Imóveis",
     description:
       "Nossas avaliações seguem rigorosamente as normas da ABNT para determinar o valor de mercado, o valor de liquidação forçada ou o valor de aluguel de propriedades.",
@@ -32,6 +97,7 @@ const detailedServices = [
       "https://via.placeholder.com/600x400/0056b3/ffffff?text=Avaliação+de+Imóveis",
   },
   {
+    icon: <BuildingIcon />,
     title: "Inspeção Predial",
     description:
       "Realizamos uma vistoria técnica completa para avaliar o estado de conservação e funcionamento da edificação, identificando anomalias e avaliando riscos.",
@@ -45,6 +111,7 @@ const detailedServices = [
       "https://via.placeholder.com/600x400/0056b3/ffffff?text=Inspeção+Predial",
   },
   {
+    icon: <SearchIcon />,
     title: "Perícia em Manifestações Patológicas",
     description:
       "Investigação técnica aprofundada para identificar a origem, causas e mecanismos de falhas construtivas como fissuras, trincas, infiltrações e umidade.",
@@ -59,24 +126,103 @@ const detailedServices = [
   },
 ];
 
-// Animação para os cards
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: "easeOut" },
-  },
+// --- Sub-componente: ServiceCard (Sem alteração) ---
+const ServiceCard = ({
+  service,
+  index,
+}: {
+  service: ServiceItem;
+  index: number;
+}) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "center center"],
+    once: true,
+  });
+  const xFrom = index % 2 === 0 ? "-50px" : "50px";
+  const x = useTransform(scrollYProgress, [0, 1], [xFrom, "0px"]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [0.3, 1]);
+
+  return (
+    <motion.div
+      ref={ref}
+      className="group grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center 
+                 p-8 rounded-2xl shadow-2xl
+                 bg-white/10 backdrop-blur-lg 
+                 border border-white/10 
+                 transition-all duration-300 hover:border-primary"
+      style={{ x, opacity }}
+      whileHover={{ y: -8 }}
+    >
+      <div
+        className={`w-full ${
+          index % 2 === 1 ? "lg:order-last" : ""
+        } overflow-hidden rounded-lg`}
+      >
+        <motion.img
+          src={service.image}
+          alt={service.title}
+          className="w-full h-auto object-cover"
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.3 }}
+        />
+      </div>
+      <div className="w-full">
+        {service.icon}
+        <h2 className="text-3xl font-bold text-white mb-4 mt-2">
+          {service.title}
+        </h2>
+        <p className="text-gray-300 leading-relaxed mb-6">
+          {service.description}
+        </p>
+        <ul className="space-y-3 mb-8">
+          {service.items.map((item) => (
+            <li key={item} className="flex items-center text-gray-200">
+              <CheckIcon />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+        <motion.div whileHover={{ x: 5 }}>
+          <Link
+            to={service.path}
+            className="text-white font-semibold text-lg transition-all hover:text-primary"
+          >
+            Ver Detalhes do Serviço <span aria-hidden="true">&rarr;</span>
+          </Link>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
 };
 
+// --- REMOVIDO: Sub-componente CTA movido para arquivo próprio ---
+
 export const ServicesPage = () => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+
   return (
-    // Fundo escuro para a página
-    <div className="bg-dark text-white">
-      {/* 1. Hero da Página (adaptado para o fundo escuro) */}
-      <section className="py-40 bg-dark">
+    <div className="bg-theme-dark text-white">
+      {/* 1. Hero da Página (com Parallax) */}
+      <section ref={ref} className="relative py-40 overflow-hidden">
         <motion.div
-          className="container mx-auto px-6 text-center"
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: "url(/page-service-fundo.jpg)",
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            y: backgroundY,
+          }}
+        />
+        <div className="absolute inset-0 bg-theme-dark/70 backdrop-blur-sm z-10"></div>
+        <motion.div
+          className="container mx-auto px-6 text-center relative z-20"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -90,66 +236,17 @@ export const ServicesPage = () => {
         </motion.div>
       </section>
 
-      {/* 2. Lista de Serviços (Layout da Imagem) */}
-      <section className="py-20" style={{ backgroundColor: "#1e3a8a" }}>
-        {" "}
-        {/* Nosso 'accent' (azul escuro) */}
+      {/* 2. Lista de Serviços */}
+      <section className="py-20 bg-theme-dark overflow-hidden">
         <div className="container mx-auto px-6 space-y-16">
           {detailedServices.map((service, index) => (
-            <motion.div
-              key={service.title}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center 
-                         bg-primary p-8 rounded-2xl shadow-2xl" // Card com nosso 'primary' (azul mais claro)
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-            >
-              {/* Coluna 1: Imagem (Ordem alterna) */}
-              <div
-                className={`w-full ${index % 2 === 1 ? "lg:order-last" : ""}`}
-              >
-                <img
-                  src={service.image}
-                  alt={service.title}
-                  className="w-full h-auto object-cover rounded-lg"
-                />
-              </div>
-
-              {/* Coluna 2: Texto */}
-              <div className="w-full">
-                <h2 className="text-3xl font-bold text-white mb-4">
-                  {service.title}
-                </h2>
-                <p className="text-gray-300 leading-relaxed mb-6">
-                  {service.description}
-                </p>
-
-                {/* Itens (como na imagem) */}
-                <ul className="space-y-3 mb-8">
-                  {service.items.map((item) => (
-                    <li key={item} className="flex items-center text-gray-200">
-                      <CheckIcon />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Link (estilo "Learn More") */}
-                <motion.div whileHover={{ x: 5 }}>
-                  <Link
-                    to={service.path}
-                    className="text-white font-semibold text-lg transition-all"
-                  >
-                    Ver Detalhes do Serviço{" "}
-                    <span aria-hidden="true">&rarr;</span>
-                  </Link>
-                </motion.div>
-              </div>
-            </motion.div>
+            <ServiceCard key={service.title} service={service} index={index} />
           ))}
         </div>
       </section>
+
+      {/* --- 3. CTA Importado --- */}
+      <CallToAction />
     </div>
   );
 };

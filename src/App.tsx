@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import { TopBar } from "./components/TopBar";
+// import { TopBar } from './components/TopBar'; // REMOVIDO
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import { Home } from "./pages/Home";
@@ -7,13 +7,11 @@ import { AboutPage } from "./pages/About";
 import { ServicesPage } from "./pages/Services";
 import { BlogPage } from "./pages/Blog";
 import { ContactPage } from "./pages/Contact";
-import { useEffect } from "react"; // Mantido para ScrollToTop
+import { useEffect } from "react";
 
 import { ServiceAvaliacao } from "./pages/ServiceAvaliacao";
 import { ServiceInspecao } from "./pages/ServiceInspecao";
 import { ServicePatologia } from "./pages/ServicePatologia";
-
-// --- LÓGICA DE SCROLL REMOVIDA DAQUI ---
 
 // Componente para rolar a página para o topo ao navegar
 const ScrollToTop = () => {
@@ -29,8 +27,6 @@ function App() {
     <div className="flex flex-col min-h-screen">
       <ScrollToTop />
 
-      {/* --- SIMPLIFICADO --- */}
-      <TopBar />
       <Navbar />
 
       <div className="flex-grow">

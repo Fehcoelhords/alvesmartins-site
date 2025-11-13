@@ -1,5 +1,11 @@
-import { motion, useInView, animate } from "framer-motion";
-import { useEffect, useRef } from "react";
+import {
+  motion,
+  useInView,
+  animate,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 // Interface de tipagem
 interface StatItem {
@@ -36,62 +42,82 @@ function AnimatedCounter({ toValue }: { toValue: number }) {
   return <span ref={ref}>0</span>;
 }
 
-// URL da Imagem de Fundo (Placeholder)
-const statsBgImageUrl =
-  "https://via.placeholder.com/1920x400/1a1a1a/ffffff?text=Equipe+Alves+Martins";
+// URL da Imagem de Fundo
+const statsBgImageUrl = "/fundo-stats.jpg";
 
 export const Stats = () => {
+  const ref = useRef(null);
+
+  // Lógica de Posição Responsiva
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+  const backgroundPosition = isMobile ? "left center" : "center";
+
+  // Hooks de Animação (Parallax e Fade)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
+  const contentY = useTransform(scrollYProgress, [0.2, 0.6], ["30px", "0px"]);
+  const contentOpacity = useTransform(scrollYProgress, [0.2, 0.6], [0, 1]);
+
   return (
     <section
-      className="relative py-24 bg-cover bg-center bg-fixed text-white"
-      style={{ backgroundImage: `url(${statsBgImageUrl})` }}
+      ref={ref}
+      className="relative py-24 bg-dark text-white overflow-hidden"
     >
-      {/* Overlay "Tecnológico" */}
-      <div className="absolute inset-0 bg-dark/80 backdrop-blur-sm"></div>
+      {/* Imagem de Fundo (com Posição Dinâmica) */}
+      <motion.div
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: `url(${statsBgImageUrl})`,
+          backgroundPosition: backgroundPosition,
+          backgroundSize: "cover",
+          y: backgroundY,
+        }}
+      />
 
-      <div className="container mx-auto px-6 relative z-10">
-        {/* --- NOVO LAYOUT DE GRID (Mais profissional) --- */}
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-12" // Mudado para 1, 2, e 4 colunas
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5 }}
-        >
+      {/* --- ATUALIZADO: Overlay mais suave (60%) --- */}
+      <div className="absolute inset-0 bg-theme-dark/60 backdrop-blur-sm z-10"></div>
+
+      {/* Container dos Números */}
+      <motion.div
+        className="container mx-auto px-6 relative z-20"
+        style={{
+          y: contentY,
+          opacity: contentOpacity,
+        }}
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-12">
           {stats.map((stat: StatItem, index: number) => (
-            <motion.div
+            <div
               key={stat.label}
               className={`flex flex-col items-center justify-center p-4
                           ${
                             index > 0 ? "sm:border-l sm:border-gray-700/50" : ""
-                          } // Linhas Divisórias
+                          }
                          `}
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0 },
-              }}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ scale: 1.05 }} // <-- EFEITO DE HOVER
             >
-              {/* --- EFEITO DE GRADIENTE "PREMIUM" NO NÚMERO --- */}
-              <div
-                className="text-6xl md:text-7xl font-bold mb-2 text-transparent bg-clip-text 
-                              bg-gradient-to-r from-gray-200 to-white"
-              >
+              {/* --- ATUALIZADO: Números em 'text-white' sólido --- */}
+              <div className="text-6xl md:text-7xl font-bold mb-2 text-white">
                 <AnimatedCounter toValue={stat.value} />
                 {stat.label.includes("Anos") && <span>+</span>}
                 {stat.label.includes("%") && <span>%</span>}
               </div>
-              <p className="text-lg text-gray-300">
+              {/* --- ATUALIZADO: Rótulo mais claro --- */}
+              <p className="text-lg text-gray-200">
                 {stat.label.replace(" (%)", "")}
               </p>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
     </section>
   );
 };

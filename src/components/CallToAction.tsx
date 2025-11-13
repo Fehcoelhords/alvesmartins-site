@@ -1,8 +1,8 @@
-import { motion, useScroll, useTransform } from "framer-motion"; // <-- Importado useScroll/useTransform
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
-import { useRef } from "react"; // <-- Importado useRef
+import { useRef } from "react";
 
-// Ícone de Email (Sem alteração)
+// Ícone de Email
 const MailIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -20,34 +20,22 @@ const MailIcon = () => (
   </svg>
 );
 
-export const ContactForm = () => {
-  const ref = useRef(null); // Referência para a seção
-
-  // --- NOVOS HOOKS DE ANIMAÇÃO (Sircle) ---
+export const CallToAction = () => {
+  const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "center center"], // Começa quando a seção entra na tela
+    offset: ["start end", "center center"],
   });
 
-  // Animação do Card (Zoom e Fade)
   const cardScale = useTransform(scrollYProgress, [0, 1], [0.85, 1]);
   const cardOpacity = useTransform(scrollYProgress, [0, 1], [0.3, 1]);
-  // --- FIM DOS NOVOS HOOKS ---
 
   return (
-    <section
-      ref={ref} // Aplicando a referência
-      className="py-20 bg-theme-dark overflow-hidden" // Adicionado overflow-hidden
-    >
+    <section ref={ref} className="py-20 bg-theme-dark overflow-hidden">
       <div className="container mx-auto px-6 text-center">
-        {/* Card 'bg-accent' (Animado pelo Scroll) */}
         <motion.div
           className="bg-accent p-12 rounded-lg shadow-xl"
-          style={{
-            // Aplicando animações de scroll
-            scale: cardScale,
-            opacity: cardOpacity,
-          }}
+          style={{ scale: cardScale, opacity: cardOpacity }}
         >
           <div className="flex justify-center mb-6">
             <div className="p-4 bg-primary rounded-full">

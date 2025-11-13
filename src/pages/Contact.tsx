@@ -1,30 +1,72 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
+// import emailjs from '@emailjs/browser'; // Lógica de envio (pausada)
 
-// PÁGINA DE CONTATO (VISUAL) - DADOS ATUALIZADOS
-// A lógica de envio (EmailJS) será adicionada posteriormente.
+// Tipos de Status do Envio
+type FormStatus = "idle" | "loading" | "success" | "error";
+
+// Componente de Feedback Visual (Cores atualizadas)
+const FormStatusMessage = ({ status }: { status: FormStatus }) => {
+  if (status === "success") {
+    return (
+      <p className="mt-4 text-green-400">
+        Mensagem enviada com sucesso! Retornaremos em breve.
+      </p>
+    );
+  }
+  if (status === "error") {
+    return (
+      <p className="mt-4 text-red-400">
+        Houve um erro ao enviar. Tente novamente mais tarde.
+      </p>
+    );
+  }
+  return null;
+};
 
 export const ContactPage = () => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const form = useRef<HTMLFormElement>(null);
+  const [status, setStatus] = useState<FormStatus>("idle");
+
+  // const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  // const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  // const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+  const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Lógica de envio (EmailJS) será implementada aqui.
+    setStatus("loading");
+
+    // Simulação de envio (como combinado)
     alert("Layout do formulário pronto. A lógica de envio será conectada.");
+    setStatus("success"); // Simula sucesso
+    form.current?.reset();
+
+    // Lógica real do EmailJS (comentada)
+    /*
+    if (!serviceID || !templateID || !publicKey) {
+      console.error("EmailJS .env chaves não configuradas.");
+      setStatus('error');
+      return;
+    }
+    // ... (resto da lógica)
+    */
   };
 
   return (
-    <div className="bg-white">
-      {/* Hero */}
-      <section className="py-40 bg-secondary">
+    // --- ATUALIZADO: Fundo 'bg-theme-dark' ---
+    <div className="bg-theme-dark">
+      {/* Hero (Fundo 'bg-theme-dark') */}
+      <section className="py-40 bg-theme-dark">
         <motion.div
           className="container mx-auto px-6 text-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-5xl font-bold text-primary mb-4">
+          <h1 className="text-5xl font-bold text-white mb-4">
             Entre em Contato
           </h1>
-          <p className="text-xl text-gray-700 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
             Estamos prontos para analisar sua demanda.
           </p>
         </motion.div>
@@ -33,21 +75,21 @@ export const ContactPage = () => {
       {/* Seção do Formulário e Informações */}
       <section className="py-20">
         <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* Coluna 1: Formulário (Visual) */}
+          {/* Coluna 1: Formulário (Dark Mode) */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-3xl font-bold text-dark mb-6">
+            <h2 className="text-3xl font-bold text-white mb-6">
               Envie sua Mensagem
             </h2>
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form ref={form} onSubmit={sendEmail} className="space-y-5">
               <div>
                 <label
                   htmlFor="user_name"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-gray-400 mb-1"
                 >
                   Nome Completo
                 </label>
@@ -57,13 +99,15 @@ export const ContactPage = () => {
                   id="user_name"
                   required
                   placeholder="Seu nome"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                  className="w-full px-4 py-3 border border-gray-700 rounded-md shadow-sm 
+                             bg-accent text-white placeholder-gray-500
+                             focus:ring-primary focus:border-primary"
                 />
               </div>
               <div>
                 <label
                   htmlFor="user_email"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-gray-400 mb-1"
                 >
                   E-mail
                 </label>
@@ -73,13 +117,15 @@ export const ContactPage = () => {
                   id="user_email"
                   required
                   placeholder="seu@email.com"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                  className="w-full px-4 py-3 border border-gray-700 rounded-md shadow-sm 
+                             bg-accent text-white placeholder-gray-500
+                             focus:ring-primary focus:border-primary"
                 />
               </div>
               <div>
                 <label
                   htmlFor="subject"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-gray-400 mb-1"
                 >
                   Assunto
                 </label>
@@ -89,13 +135,15 @@ export const ContactPage = () => {
                   id="subject"
                   required
                   placeholder="Inspeção, Avaliação, etc."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                  className="w-full px-4 py-3 border border-gray-700 rounded-md shadow-sm 
+                             bg-accent text-white placeholder-gray-500
+                             focus:ring-primary focus:border-primary"
                 />
               </div>
               <div>
                 <label
                   htmlFor="message"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-gray-400 mb-1"
                 >
                   Mensagem
                 </label>
@@ -105,28 +153,35 @@ export const ContactPage = () => {
                   rows={5}
                   required
                   placeholder="Descreva sua necessidade..."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                  className="w-full px-4 py-3 border border-gray-700 rounded-md shadow-sm 
+                             bg-accent text-white placeholder-gray-500
+                             focus:ring-primary focus:border-primary"
                 ></textarea>
               </div>
+
               <div>
                 <button
                   type="submit"
-                  className="w-full bg-primary text-white font-bold py-3 px-6 rounded-md shadow-lg hover:bg-accent transition-all duration-300"
+                  disabled={status === "loading"}
+                  className="w-full bg-primary text-white font-bold py-3 px-6 rounded-md shadow-lg 
+                             hover:bg-accent transition-all duration-300 
+                             disabled:bg-gray-500"
                 >
-                  Enviar Mensagem (Visual)
+                  {status === "loading" ? "Enviando..." : "Enviar Mensagem"}
                 </button>
               </div>
             </form>
+            <FormStatusMessage status={status} />
           </motion.div>
 
-          {/* Coluna 2: Informações de Contato (ATUALIZADO) */}
+          {/* Coluna 2: Informações de Contato (Dark Mode) */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <h2 className="text-3xl font-bold text-dark mb-6">Informações</h2>
+            <h2 className="text-3xl font-bold text-white mb-6">Informações</h2>
             <div className="space-y-6">
               <div className="flex items-start">
                 <svg
@@ -149,11 +204,11 @@ export const ContactPage = () => {
                   />
                 </svg>
                 <div>
-                  <h4 className="text-xl font-semibold text-dark">
+                  <h4 className="text-xl font-semibold text-white">
                     Localização
                   </h4>
                   [cite_start]
-                  <p className="text-gray-600">
+                  <p className="text-gray-300">
                     Penha, São Paulo/SP [cite: 12]
                   </p>
                 </div>
@@ -173,9 +228,9 @@ export const ContactPage = () => {
                   />
                 </svg>
                 <div>
-                  <h4 className="text-xl font-semibold text-dark">Telefone</h4>
+                  <h4 className="text-xl font-semibold text-white">Telefone</h4>
                   [cite_start]
-                  <p className="text-gray-600">(11) 94788-4165 [cite: 8, 32]</p>
+                  <p className="text-gray-300">(11) 94788-4165 [cite: 8, 32]</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -193,9 +248,9 @@ export const ContactPage = () => {
                   />
                 </svg>
                 <div>
-                  <h4 className="text-xl font-semibold text-dark">E-mail</h4>
+                  <h4 className="text-xl font-semibold text-white">E-mail</h4>
                   [cite_start]
-                  <p className="text-gray-600">
+                  <p className="text-gray-300">
                     engdanilogmartins@gmail.com [cite: 10, 33]
                   </p>
                 </div>

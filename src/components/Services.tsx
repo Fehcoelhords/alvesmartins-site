@@ -1,11 +1,11 @@
-import React from "react";
-import { motion, Variants } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, Variants, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import { BuildingIcon } from "../assets/icons/BuildingIcon";
 import { RulerIcon } from "../assets/icons/RulerIcon";
 import { SearchIcon } from "../assets/icons/SearchIcon";
 
-// Dados dos serviços com os links dedicados
+// Dados dos serviços
 const servicesList = [
   {
     icon: <RulerIcon />,
@@ -30,45 +30,59 @@ const servicesList = [
   },
 ];
 
-// Animação para o container (stagger)
+// Animação para os itens (Stagger)
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+};
+
+// Animação para o container (Stagger)
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.2, // Anima cada filho com 0.2s de diferença
+      staggerChildren: 0.2,
+      delayChildren: 0.2,
     },
   },
 };
 
-// Animação para os itens (fade in e subir)
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
-  },
-};
-
 export const Services = () => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "center center"],
+  });
+  const headerY = useTransform(scrollYProgress, [0, 1], ["30px", "0px"]);
+  const headerOpacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  const gridScale = useTransform(scrollYProgress, [0, 1], [0.9, 1]);
+  const gridOpacity = useTransform(scrollYProgress, [0, 1], [0.5, 1]);
+
   return (
-    <section id="services" className="py-20 bg-secondary">
+    <section
+      ref={ref}
+      id="services"
+      className="py-20 bg-theme-dark overflow-hidden" // <-- Removido 'relative'
+    >
+      {/* --- EFEITO DEGRADÊ REMOVIDO --- */}
+
       <div className="container mx-auto px-6">
-        {/* --- Cabeçalho (Layout da Imagem) --- */}
+        {/* Cabeçalho (Animado pelo Scroll) */}
         <motion.div
           className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={itemVariants}
+          style={{ y: headerY, opacity: headerOpacity }}
         >
           {/* Títulos */}
           <div>
-            <p className="text-base font-medium text-gray-500 mb-1">
+            <p className="text-base font-medium text-gray-400 mb-1">
               // Nossas Soluções
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-dark">
+            <h2 className="text-3xl md:text-4xl font-bold text-white">
               Serviços Especializados para
               <span className="block text-primary">Engenharia Diagnóstica</span>
             </h2>
@@ -88,46 +102,42 @@ export const Services = () => {
           </motion.div>
         </motion.div>
 
-        {/* --- Cards (Layout da Imagem) --- */}
+        {/* Grade de Cards (Animada pelo Scroll + Stagger) */}
         <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-8"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
+          style={{ scale: gridScale, opacity: gridOpacity }}
         >
           {servicesList.map((service) => (
             <motion.div
               key={service.title}
-              className="group" // Adicionado 'group'
+              className="group"
               variants={itemVariants}
             >
-              {/* O Link agora envolve o card inteiro para melhor UX */}
               <Link to={service.path} className="block h-full">
                 <div
-                  className="bg-white p-8 rounded-lg shadow-lg h-full
+                  className="bg-accent p-8 rounded-lg shadow-lg h-full
                                 border-b-4 border-transparent 
                                 group-hover:border-primary transition-colors duration-300"
                 >
-                  {/* Ícone Quadrado */}
                   <div className="flex-shrink-0">
                     <div className="inline-flex items-center justify-center h-16 w-16 rounded-lg bg-primary text-white">
-                      {/* Força o ícone a ter w-8, h-8 e cor branca */}
                       {React.cloneElement(service.icon, {
                         className: "h-8 w-8 text-white",
                       })}
                     </div>
                   </div>
 
-                  {/* Conteúdo de Texto */}
-                  <h3 className="text-xl font-bold text-dark mt-6 mb-3">
+                  <h3 className="text-xl font-bold text-white mt-6 mb-3">
                     {service.title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed mb-6">
+                  <p className="text-gray-300 leading-relaxed mb-6">
                     {service.description}
                   </p>
 
-                  {/* Link "Saiba Mais" (Sempre visível) */}
                   <div className="text-primary font-semibold">
                     Saiba Mais <span aria-hidden="true">&rarr;</span>
                   </div>

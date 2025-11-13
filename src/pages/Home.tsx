@@ -3,8 +3,8 @@ import { Services } from "../components/Services";
 import { About } from "../components/About";
 import { Stats } from "../components/Stats";
 import { Testimonials } from "../components/Testimonials";
-import { BlogPreview } from "../components/BlogPreview"; // Importado M4
-import { ContactForm } from "../components/ContactForm"; // Importado M4
+import { BlogPreview } from "../components/BlogPreview";
+import { ContactForm } from "../components/ContactForm";
 
 export const Home = () => {
   return (
@@ -14,8 +14,8 @@ export const Home = () => {
       <About />
       <Stats />
       <Testimonials />
-      <BlogPreview /> {/* Adicionado M4 */}
-      <ContactForm /> {/* Adicionado M4 */}
+      <BlogPreview />
+      <ContactForm />
     </main>
   );
 };

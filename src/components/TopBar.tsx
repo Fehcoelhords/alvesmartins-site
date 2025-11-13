@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-// --- Ícones (Sem alteração) ---
+// --- Ícones (Com Paths Completos) ---
 const PhoneIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -87,12 +87,10 @@ const IconLinkedin = () => (
   </svg>
 );
 
-// --- ATUALIZADO: Removido 'ref' e 'isVisible'. ---
-// --- ATUALIZADO: Classe 'hidden md:flex' reinstaurada. ---
 export const TopBar = () => {
   return (
     <div
-      className="hidden md:flex bg-dark text-white text-sm z-50" // z-50 para ficar acima de tudo
+      className="hidden md:flex bg-dark text-white text-sm z-40" // z-40 (Atrás)
     >
       <div className="container mx-auto px-6 py-3 flex justify-between items-center">
         {/* Lado Esquerdo: Contatos */}

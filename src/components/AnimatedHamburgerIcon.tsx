@@ -2,51 +2,53 @@ import { motion, Variants } from "framer-motion";
 
 interface Props {
   isOpen: boolean;
+  isDark: boolean; // Prop para controlar a cor
 }
 
-// Variantes para a linha de CIMA (gira 45 graus)
+// Variantes para a linha de CIMA
 const topVariants: Variants = {
   closed: { rotate: 0, y: 0 },
   open: {
     rotate: 45,
-    y: 8.5, // Ponto central (altura 5px / 2) + (espaçamento 6px) = 8.5
+    y: 8.5,
   },
 };
 
-// Variantes para a linha do MEIO (desaparece)
+// Variantes para a linha do MEIO
 const middleVariants: Variants = {
   closed: { opacity: 1 },
   open: { opacity: 0 },
 };
 
-// Variantes para a linha de BAIXO (gira -45 graus)
+// Variantes para a linha de BAIXO
 const bottomVariants: Variants = {
   closed: { rotate: 0, y: 0 },
   open: {
     rotate: -45,
-    y: -8.5, // Ponto central (altura 5px / 2) - (espaçamento 6px) = -8.5
+    y: -8.5,
   },
 };
 
-export const AnimatedHamburgerIcon = ({ isOpen }: Props) => {
+export const AnimatedHamburgerIcon = ({ isOpen, isDark }: Props) => {
+  // Determina a cor: 'bg-dark' (preto) se 'isDark' for true, senão 'bg-white'
+  const colorClass = isDark ? "bg-dark" : "bg-white";
+
   return (
-    // Container com altura e largura definidas para as 3 linhas
-    // h-5 (20px) = 3x linhas (1.5px) + 2x espaçamento (8.5px)
     <div className="w-6 h-5 flex flex-col justify-between">
       <motion.div
-        className="h-0.5 w-full bg-dark rounded-sm" // Linha 1
+        className={`h-0.5 w-full ${colorClass} rounded-sm`} // Cor dinâmica
         variants={topVariants}
         animate={isOpen ? "open" : "closed"}
         transition={{ duration: 0.3 }}
       />
       <motion.div
-        className="h-0.5 w-full bg-dark rounded-sm" // Linha 2
+        className={`h-0.5 w-full ${colorClass} rounded-sm`} // Cor dinâmica
         variants={middleVariants}
         animate={isOpen ? "open" : "closed"}
         transition={{ duration: 0.2 }}
       />
       <motion.div
-        className="h-0.5 w-full bg-dark rounded-sm" // Linha 3
+        className={`h-0.5 w-full ${colorClass} rounded-sm`} // Cor dinâmica
         variants={bottomVariants}
         animate={isOpen ? "open" : "closed"}
         transition={{ duration: 0.3 }}

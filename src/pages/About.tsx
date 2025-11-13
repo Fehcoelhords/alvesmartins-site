@@ -6,7 +6,7 @@ const heroImageUrl =
 const founderImageUrl =
   "https://via.placeholder.com/800x600/1e3a8a/ffffff?text=Danilo+G.+A.+Martins";
 
-// Ícone para certificação
+// Ícone para certificação (Cor 'primary' já se destaca no fundo escuro)
 const CertificateIcon = () => (
   <svg
     className="w-6 h-6 text-primary mr-3 flex-shrink-0"
@@ -34,13 +34,15 @@ export const AboutPage = () => {
   };
 
   return (
-    <div className="bg-white">
-      {/* 1. Hero da Página Sobre (ATUALIZADO) */}
+    // --- ATUALIZADO: Fundo agora é 'bg-theme-dark' ---
+    <div className="bg-theme-dark">
+      {/* 1. Hero da Página Sobre */}
       <section
         className="relative py-40 bg-cover bg-center"
         style={{ backgroundImage: `url(${heroImageUrl})` }}
       >
-        <div className="absolute inset-0 bg-black opacity-40"></div>
+        <div className="absolute inset-0 bg-black opacity-60"></div>{" "}
+        {/* Overlay mais forte */}
         <motion.div
           className="container mx-auto px-6 text-center relative z-10"
           initial={{ opacity: 0, y: 20 }}
@@ -57,8 +59,8 @@ export const AboutPage = () => {
         </motion.div>
       </section>
 
-      {/* 2. Seção Fundador e Resp. Técnico (ATUALIZADA) */}
-      <section className="py-20">
+      {/* 2. Seção Fundador e Resp. Técnico (Fundo 'theme-dark') */}
+      <section className="py-20 bg-theme-dark">
         <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <motion.div
             initial="hidden"
@@ -69,22 +71,24 @@ export const AboutPage = () => {
             <h4 className="text-lg font-semibold text-primary mb-2">
               Fundador e Responsável Técnico
             </h4>
-            [cite_start]
-            <h2 className="text-3xl font-bold text-dark mb-6">
-              Danilo Guilherme Alves Martins [cite: 5, 30]
+            <h2 className="text-3xl font-bold text-white mb-6">
+              Danilo Guilherme Alves Martins
             </h2>
-            <p className="text-gray-600 mb-4 leading-relaxed">
-              [cite_start]Engenheiro Civil com mais de 10 anos de
-              experiência[cite: 22, 36], Danilo Martins é o fundador e
-              responsável técnico pela Alves Martins Engenharia.
+            <p className="text-gray-300 mb-4 leading-relaxed">
+              {" "}
+              {/* Texto claro */}
+              Engenheiro Civil com mais de 10 anos de experiência, Danilo
+              Martins é o fundador e responsável técnico pela Alves Martins
+              Engenharia.
             </p>
-            <p className="text-gray-600 mb-4 leading-relaxed">
+            <p className="text-gray-300 mb-4 leading-relaxed">
+              {" "}
+              {/* Texto claro */}
               Sua trajetória inclui especialização em planejamento, controle de
-              cronogramas e [cite_start]gestão de contratos em obras públicas e
-              privadas[cite: 38]. Com registro ativo no [cite_start]CREA-SP
-              (5069948539)[cite: 16], atua na elaboração de laudos técnicos de
-              patologias, [cite_start]inspeções prediais e avaliações de imóveis
-              com inferência estatística[cite: 77].
+              cronogramas e gestão de contratos em obras públicas e privadas.
+              Com registro ativo no CREA-SP (5069948539), atua na elaboração de
+              laudos técnicos de patologias, inspeções prediais e avaliações de
+              imóveis com inferência estatística.
             </p>
           </motion.div>
           <motion.div
@@ -94,7 +98,7 @@ export const AboutPage = () => {
             variants={textVariants}
           >
             <img
-              src={founderImageUrl} // Usando placeholder
+              src={founderImageUrl}
               alt="Fundador Danilo Guilherme Alves Martins"
               className="rounded-lg shadow-xl w-full h-auto object-cover"
             />
@@ -102,8 +106,10 @@ export const AboutPage = () => {
         </div>
       </section>
 
-      {/* 3. Seção Formação & Certificações (NOVA/ATUALIZADA) */}
-      <section className="py-20 bg-secondary">
+      {/* 3. Seção Formação & Certificações (Fundo 'accent') */}
+      <section className="py-20 bg-accent">
+        {" "}
+        {/* <-- Fundo 'bg-accent' para contraste */}
         <div className="container mx-auto px-6">
           <motion.div
             className="text-center mb-12"
@@ -112,7 +118,7 @@ export const AboutPage = () => {
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
           >
-            <h2 className="text-3xl font-bold text-dark">
+            <h2 className="text-3xl font-bold text-white">
               Formação e Certificações
             </h2>
           </motion.div>
@@ -124,65 +130,59 @@ export const AboutPage = () => {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ staggerChildren: 0.2 }}
           >
-            {/* Formação */}
+            {/* Formação (Card com fundo 'theme-dark' para se destacar do 'accent') */}
             <motion.div
               variants={textVariants}
-              className="bg-white p-6 rounded-lg shadow-lg"
+              className="bg-theme-dark p-6 rounded-lg shadow-lg"
             >
-              <h3 className="text-2xl font-bold text-primary mb-4">
+              <h3 className="text-2xl font-bold text-white mb-4">
                 Formação Acadêmica
               </h3>
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <CertificateIcon />
-                  [cite_start]
-                  <span className="text-gray-700">
+                  <span className="text-gray-300">
                     Cursando Pós-Graduação em Planejamento, Gestão e Controle de
-                    Obras Civis (UFRJ) [cite: 37, 56]
+                    Obras Civis (UFRJ)
                   </span>
                 </li>
                 <li className="flex items-start">
                   <CertificateIcon />
-                  [cite_start]
-                  <span className="text-gray-700">
-                    Pós-Graduação em BIM Manager (PUC/MG) [cite: 36, 57]
+                  <span className="text-gray-300">
+                    Pós-Graduação em BIM Manager (PUC/MG)
                   </span>
                 </li>
                 <li className="flex items-start">
                   <CertificateIcon />
-                  [cite_start]
-                  <span className="text-gray-700">
+                  <span className="text-gray-300">
                     Graduação em Engenharia Civil (Universidade Nove de
-                    Julho/SP) [cite: 58]
+                    Julho/SP)
                   </span>
                 </li>
               </ul>
             </motion.div>
 
-            {/* Certificações */}
+            {/* Certificações (Card com fundo 'theme-dark') */}
             <motion.div
               variants={textVariants}
-              className="bg-white p-6 rounded-lg shadow-lg"
+              className="bg-theme-dark p-6 rounded-lg shadow-lg"
             >
-              <h3 className="text-2xl font-bold text-primary mb-4">
+              <h3 className="text-2xl font-bold text-white mb-4">
                 Certificações de Destaque
               </h3>
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <CertificateIcon />
-                  [cite_start]
-                  <span className="text-gray-700">
+                  <span className="text-gray-300">
                     Elite PRO: Formação em Engenharia de Avaliações com
                     Inferência Estatística Aplicada (Instituto de Engenharia de
-                    Elite - 2025) [cite: 24, 62, 884]
+                    Elite - 2025)
                   </span>
                 </li>
                 <li className="flex items-start">
                   <CertificateIcon />
-                  [cite_start]
-                  <span className="text-gray-700">
+                  <span className="text-gray-300">
                     Engenharia de Avaliação de Imóveis Urbanos (IBAPE - 2023)
-                    [cite: 24, 63, 864]
                   </span>
                 </li>
               </ul>
