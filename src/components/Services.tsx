@@ -2,36 +2,33 @@ import React, { useRef } from "react";
 import { motion, Variants, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 
-import { BuildingIcon } from "../assets/icons/BuildingIcon";
-import { RulerIcon } from "../assets/icons/RulerIcon";
-import { SearchIcon } from "../assets/icons/SearchIcon";
+// --- Ícones (Removidos, pois este template não os usa) ---
+// import { BuildingIcon } from "../assets/icons/BuildingIcon";
+// import { RulerIcon } from "../assets/icons/RulerIcon";
+// import { SearchIcon } from "../assets/icons/SearchIcon";
 
-// Lista de Serviços
+// --- ATUALIZADO: Lista de Serviços com novas imagens ---
 const servicesList = [
   {
-    icon: <RulerIcon />,
-    title: "Perícia Avaliatória de Imóveis",
-    description:
-      "Avaliações técnicas precisas para determinar o valor de mercado de imóveis.",
+    title: "Perícia em Avaliação de imóveis",
     path: "/servicos/avaliacao-de-imoveis",
+    image:
+      "https://faculdadesaomarcos.com.br/wp-content/uploads/2025/01/avaliador-imobiliario-pode-atuar-como-perito-judicial-800x500-1.jpg", // Foto de plantas/blueprints
   },
   {
-    icon: <BuildingIcon />,
-    title: "Inspeção Predial",
-    description:
-      "Diagnóstico completo da edificação, analisando sistemas construtivos e segurança.",
-    path: "/servicos/inspecao-predial",
-  },
-  {
-    icon: <SearchIcon />,
-    title: "Perícia em Manifestações Patológicas",
-    description:
-      "Investigação de falhas construtivas para identificar causas e soluções.",
+    title: "Laudos técnicos",
     path: "/servicos/pericia-manifestacoes-patologicas",
+    image:
+      "https://www.bhgengenharia.com/wp-content/uploads/2024/03/Elaboracao-de-Laudo-Tecnico-BHG-Engenharia-3.webp", // Foto de prancheta/checklist
+  },
+  {
+    title: "Inspeção Predial",
+    path: "/servicos/inspecao-predial",
+    image: "https://carluc.com.br/wp-content/uploads/Inspecao-Predial.jpg", // Foto de engenheiro inspecionando
   },
 ];
 
-// Animação dos itens (Stagger)
+// Animação dos itens
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -48,7 +45,7 @@ const containerVariants: Variants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.2,
-      delayChildren: 0.3, // Atraso para os cards aparecerem
+      delayChildren: 0.2,
     },
   },
 };
@@ -56,104 +53,77 @@ const containerVariants: Variants = {
 export const Services = () => {
   const ref = useRef(null);
 
-  // --- HOOKS DE ANIMAÇÃO (Sircle) ---
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "start 60%"], // Animação começa e termina mais rápido
+    offset: ["start end", "center center"],
   });
 
-  // --- ATUALIZADO: Animação "Exagerada" ---
-  // Em vez de 'scale', agora usamos 'y' (vertical) e 'opacity'
-  const containerY = useTransform(scrollYProgress, [0, 1], ["80px", "0px"]); // Move 80px
-  const containerOpacity = useTransform(scrollYProgress, [0, 1], [0, 1]); // Fade-in completo
-  // --- FIM DA ATUALIZAÇÃO ---
+  const headerY = useTransform(scrollYProgress, [0, 1], ["30px", "0px"]);
+  const headerOpacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  const gridY = useTransform(scrollYProgress, [0.1, 1], ["50px", "0px"]);
+  const gridOpacity = useTransform(scrollYProgress, [0.1, 1], [0, 1]);
 
   return (
     <section
       ref={ref}
-      id="services"
+      id="services-1354"
       className="py-20 bg-secondary overflow-hidden" // Fundo cinza-claro
     >
-      <div className="container mx-auto px-6">
-        {/* Container Flutuante (Estilo Pipely) */}
+      <div className="container max-w-7xl mx-auto px-6 flex flex-col items-center md:items-start gap-12">
+        {/* Cabeçalho */}
         <motion.div
-          className="bg-white rounded-2xl shadow-xl p-8 md:p-12"
-          style={{
-            y: containerY, // <-- Aplicando animação Y
-            opacity: containerOpacity, // <-- Aplicando animação Opacity
-          }}
+          className="text-center md:text-left"
+          style={{ y: headerY, opacity: headerOpacity }}
         >
-          {/* Header */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
-            <div>
-              <p className="text-base font-medium text-gray-500 mb-1">
-                // Nossas Soluções
-              </p>
-              <h2 className="text-3xl md:text-4xl font-bold text-dark">
-                Serviços Especializados para
-                <span className="block text-primary">
-                  Engenharia Diagnóstica
-                </span>
-              </h2>
-            </div>
+          <p className="text-base font-medium text-gray-500 mb-1">
+            // Nossas Soluções
+          </p>
+          <h2 className="text-3xl md:text-4xl font-bold text-dark max-w-2xl">
+            Serviços Especializados para
+            <span className="text-primary"> Engenharia Diagnóstica</span>
+          </h2>
+        </motion.div>
 
-            <motion.div
-              className="mt-4 md:mt-0 md:ml-4 flex-shrink-0"
-              whileHover={{ scale: 1.05 }}
+        {/* Grade de Cards (Estilo do seu CSS) */}
+        <motion.div
+          className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+          style={{ y: gridY, opacity: gridOpacity }}
+        >
+          {servicesList.map((service) => (
+            // Card Item
+            <div
+              key={service.title}
+              className="group h-80 rounded-2xl overflow-hidden shadow-xl relative z-10"
             >
+              {/* Link (Cobre o card todo) */}
               <Link
-                to="/servicos"
-                className="bg-primary text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:bg-accent transition-all duration-300"
+                to={service.path}
+                className="absolute inset-0 z-20 flex justify-center items-center p-6 text-center"
               >
-                Ver Todos os Serviços
+                <h3 className="text-2xl font-bold text-white">
+                  {service.title}
+                </h3>
               </Link>
-            </motion.div>
-          </div>
 
-          {/* Cards (Stagger) */}
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-          >
-            {servicesList.map((service) => (
-              <motion.div
-                key={service.title}
-                className="group"
-                variants={itemVariants}
-              >
-                <Link to={service.path} className="block h-full">
-                  <div
-                    className="bg-secondary p-8 rounded-lg h-full
-                               transition-all duration-300 
-                               hover:shadow-lg hover:scale-105"
-                  >
-                    <div className="flex-shrink-0">
-                      <div className="inline-flex items-center justify-center h-16 w-16 rounded-lg bg-primary text-white">
-                        {React.cloneElement(service.icon, {
-                          className: "h-8 w-8 text-white",
-                        })}
-                      </div>
-                    </div>
+              {/* Overlay (Muda de cor no hover) */}
+              <div
+                className="absolute inset-0 z-10 bg-black opacity-40 
+                           group-hover:bg-primary group-hover:opacity-80 
+                           transition-all duration-300"
+              />
 
-                    <h3 className="text-xl font-bold text-dark mt-6 mb-3">
-                      {service.title}
-                    </h3>
-
-                    <p className="text-gray-600 leading-relaxed mb-6">
-                      {service.description}
-                    </p>
-
-                    <div className="text-primary font-semibold">
-                      Saiba Mais <span aria-hidden="true">&rarr;</span>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
+              {/* Imagem de Fundo (Dá zoom no hover) */}
+              <img
+                src={service.image}
+                alt={service.title}
+                loading="lazy"
+                className="absolute inset-0 z-0 h-full w-full object-cover 
+                           group-hover:scale-110 
+                           transition-transform duration-500 ease-in-out"
+              />
+            </div>
+          ))}
         </motion.div>
       </div>
     </section>

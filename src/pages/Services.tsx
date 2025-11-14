@@ -1,9 +1,9 @@
 import { motion, Variants, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import React, { useRef } from "react";
-import { CallToAction } from "../components/CallToAction"; // <-- IMPORTADO O CTA
+import { CallToAction } from "../components/CallToAction";
 
-// --- Ícones (Sem alteração) ---
+// --- Ícones ---
 const CheckIcon = () => (
   <svg
     className="w-5 h-5 text-primary mr-3 flex-shrink-0"
@@ -72,7 +72,7 @@ const SearchIcon = () => (
   </svg>
 );
 
-// --- Tipos e Dados (Sem alteração) ---
+// --- Tipos e Dados ---
 interface ServiceItem {
   icon: JSX.Element;
   title: string;
@@ -84,7 +84,7 @@ interface ServiceItem {
 const detailedServices: ServiceItem[] = [
   {
     icon: <RulerIcon />,
-    title: "Perícia em Avaliação de Imóveis",
+    title: "Perícia Avaliatória de Imóveis",
     description:
       "Nossas avaliações seguem rigorosamente as normas da ABNT para determinar o valor de mercado, o valor de liquidação forçada ou o valor de aluguel de propriedades.",
     items: [
@@ -94,7 +94,7 @@ const detailedServices: ServiceItem[] = [
     ],
     path: "/servicos/avaliacao-de-imoveis",
     image:
-      "https://via.placeholder.com/600x400/0056b3/ffffff?text=Avaliação+de+Imóveis",
+      "https://faculdadesaomarcos.com.br/wp-content/uploads/2025/01/avaliador-imobiliario-pode-atuar-como-perito-judicial-800x500-1.jpg",
   },
   {
     icon: <BuildingIcon />,
@@ -107,8 +107,7 @@ const detailedServices: ServiceItem[] = [
       "Elaboração de Laudo de Inspeção (LIP)",
     ],
     path: "/servicos/inspecao-predial",
-    image:
-      "https://via.placeholder.com/600x400/0056b3/ffffff?text=Inspeção+Predial",
+    image: "https://carluc.com.br/wp-content/uploads/Inspecao-Predial.jpg",
   },
   {
     icon: <SearchIcon />,
@@ -122,11 +121,11 @@ const detailedServices: ServiceItem[] = [
     ],
     path: "/servicos/pericia-manifestacoes-patologicas",
     image:
-      "https://via.placeholder.com/600x400/0056b3/ffffff?text=Manifestações+Patológicas",
+      "https://cdn.prod.website-files.com/5eea5dfef03bd29ec5cd9a27/64023fbda8950b68a93eb1a9_patologias-na-constru%C3%A7%C3%A3o-civil-12.webp",
   },
 ];
 
-// --- Sub-componente: ServiceCard (Sem alteração) ---
+// --- Sub-componente: ServiceCard ---
 const ServiceCard = ({
   service,
   index,
@@ -197,8 +196,6 @@ const ServiceCard = ({
   );
 };
 
-// --- REMOVIDO: Sub-componente CTA movido para arquivo próprio ---
-
 export const ServicesPage = () => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -245,7 +242,7 @@ export const ServicesPage = () => {
         </div>
       </section>
 
-      {/* --- 3. CTA Importado --- */}
+      {/* 3. CTA Reutilizado */}
       <CallToAction />
     </div>
   );
