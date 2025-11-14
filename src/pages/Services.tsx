@@ -84,7 +84,7 @@ interface ServiceItem {
 const detailedServices: ServiceItem[] = [
   {
     icon: <RulerIcon />,
-    title: "Perícia Avaliatória de Imóveis",
+    title: "Perícia em Avaliação de Imóveis",
     description:
       "Nossas avaliações seguem rigorosamente as normas da ABNT para determinar o valor de mercado, o valor de liquidação forçada ou o valor de aluguel de propriedades.",
     items: [

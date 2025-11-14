@@ -1,195 +1,156 @@
 import { motion, Variants } from "framer-motion";
+import { Link } from "react-router-dom";
+import React from "react";
+import { CallToAction } from "../components/CallToAction";
 
-// URLs de placeholder (mantidas)
-const heroImageUrl =
-  "https://via.placeholder.com/1920x600/0056b3/ffffff?text=Alves+Martins+Engenharia";
-const founderImageUrl =
-  "https://via.placeholder.com/800x600/1e3a8a/ffffff?text=Danilo+G.+A.+Martins";
+// Placeholders para as imagens (coloque na pasta /public/)
+const aboutHeroImage =
+  "https://via.placeholder.com/800x800/1e3a8a/ffffff?text=Danilo+G.+A.+Martins";
+const profileImg1 =
+  "https://via.placeholder.com/150x150/0056b3/ffffff?text=Cliente+1";
+const profileImg2 =
+  "https://via.placeholder.com/150x150/1e3a8a/ffffff?text=Cliente+2";
+const profileImg3 =
+  "https://via.placeholder.com/150x150/0056b3/ffffff?text=Cliente+3";
 
-// Ícone para certificação (Cor 'primary' já se destaca no fundo escuro)
-const CertificateIcon = () => (
-  <svg
-    className="w-6 h-6 text-primary mr-3 flex-shrink-0"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-    />
-  </svg>
-);
+// --- NOVAS VARIANTES DE ANIMAÇÃO ---
+
+// 1. Animação "Tracking-in-Contract-Bck-Top" (para o H1)
+// Traduzido do seu CSS
+const trackingVariant: Variants = {
+  hidden: {
+    letterSpacing: "1em", // <-- ATUALIZADO
+    transform: "translateZ(400px) translateY(-300px)", // <-- ATUALIZADO
+    opacity: 0,
+  },
+  visible: {
+    letterSpacing: "0em", // <-- ATUALIZADO
+    transform: "translateZ(0px) translateY(0px)", // <-- ATUALIZADO
+    opacity: 1,
+    transition: { duration: 1.2, ease: [0.1, 0.7, 0.3, 1], delay: 0.2 }, // Duração ajustada
+  },
+};
+
+// 2. Animação "Slide-in" (para o resto do conteúdo)
+const slideInVariant: Variants = {
+  hidden: { opacity: 0, x: -50 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.8, ease: "easeOut" },
+  },
+};
+// --- FIM DAS VARIANTES ---
 
 export const AboutPage = () => {
-  const textVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
-
   return (
-    // --- ATUALIZADO: Fundo agora é 'bg-theme-dark' ---
-    <div className="bg-theme-dark">
-      {/* 1. Hero da Página Sobre */}
-      <section
-        className="relative py-40 bg-cover bg-center"
-        style={{ backgroundImage: `url(${heroImageUrl})` }}
-      >
-        <div className="absolute inset-0 bg-black opacity-60"></div>{" "}
-        {/* Overlay mais forte */}
-        <motion.div
-          className="container mx-auto px-6 text-center relative z-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h1 className="text-5xl font-bold text-white mb-4">
-            Sobre a Alves Martins
-          </h1>
-          <p className="text-xl text-gray-200 max-w-2xl mx-auto">
-            Precisão técnica, conformidade normativa e mais de 10 anos de
-            experiência.
-          </p>
-        </motion.div>
-      </section>
-
-      {/* 2. Seção Fundador e Resp. Técnico (Fundo 'theme-dark') */}
-      <section className="py-20 bg-theme-dark">
-        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <>
+      {/* 1. Seção Hero (Traduzida do seu código) */}
+      <section className="relative pt-44 pb-20 bg-white dark:bg-darklight">
+        <div className="container mx-auto max-w-6xl px-4 grid grid-cols-12 gap-8 relative z-10">
+          {/* Coluna da Esquerda: Texto */}
           <motion.div
+            className="md:col-span-6 col-span-12 space-y-6 flex flex-col items-start justify-center"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={textVariants}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ staggerChildren: 0.1 }}
           >
-            <h4 className="text-lg font-semibold text-primary mb-2">
-              Fundador e Responsável Técnico
-            </h4>
-            <h2 className="text-3xl font-bold text-white mb-6">
-              Danilo Guilherme Alves Martins
-            </h2>
-            <p className="text-gray-300 mb-4 leading-relaxed">
-              {" "}
-              {/* Texto claro */}
-              Engenheiro Civil com mais de 10 anos de experiência, Danilo
-              Martins é o fundador e responsável técnico pela Alves Martins
-              Engenharia.
-            </p>
-            <p className="text-gray-300 mb-4 leading-relaxed">
-              {" "}
-              {/* Texto claro */}
-              Sua trajetória inclui especialização em planejamento, controle de
-              cronogramas e gestão de contratos em obras públicas e privadas.
-              Com registro ativo no CREA-SP (5069948539), atua na elaboração de
-              laudos técnicos de patologias, inspeções prediais e avaliações de
-              imóveis com inferência estatística.
-            </p>
+            {/* topper */}
+            <motion.div
+              className="flex gap-2 items-center"
+              variants={slideInVariant}
+            >
+              <span className="w-3 h-3 rounded-full bg-primary"></span>
+              <span className="font-medium text-dark text-sm">
+                Engenheiro Civil | CREA-SP: 5069948539
+              </span>
+            </motion.div>
+
+            {/* Título H1 com a nova animação */}
+            <motion.h1
+              className="text-dark font-bold text-4xl md:text-5xl md:leading-[1.15]"
+              variants={trackingVariant} // <-- APLICADO AQUI
+            >
+              Danilo G. A. Martins: Mais de 10 Anos de Atuação
+            </motion.h1>
+
+            {/* Parágrafo */}
+            <motion.p
+              className="text-gray-600 text-xl font-semibold"
+              variants={slideInVariant}
+            >
+              Engenharia Diagnóstica com Rigor Técnico.
+            </motion.p>
+
+            {/* Botão */}
+            <motion.div variants={slideInVariant}>
+              <motion.div whileHover={{ scale: 1.05 }} className="inline-block">
+                <Link
+                  to="/servicos"
+                  className="py-3 bg-primary text-white rounded-md hover:bg-accent transition duration-300 px-8 font-semibold"
+                >
+                  Conheça os Serviços
+                </Link>
+              </motion.div>
+            </motion.div>
+
+            {/* Grupo de Avatares */}
+            <motion.div
+              className="flex items-center mt-12 gap-4"
+              variants={slideInVariant}
+            >
+              <div className="flex items-center">
+                <img
+                  src={profileImg1}
+                  alt="Cliente 1"
+                  className="w-10 h-10 rounded-full border-2 border-solid border-white -ml-0 shadow-md"
+                />
+                <img
+                  src={profileImg2}
+                  alt="Cliente 2"
+                  className="w-10 h-10 rounded-full border-2 border-solid border-white -ml-3 shadow-md"
+                />
+                <img
+                  src={profileImg3}
+                  alt="Cliente 3"
+                  className="w-10 h-10 rounded-full border-2 border-solid border-white -ml-3 shadow-md"
+                />
+              </div>
+              <div>
+                <p className="text-sm font-normal text-gray-500 max-w-56">
+                  Precisa de um laudo?{" "}
+                  <Link
+                    to="/contato"
+                    className="text-primary hover:text-accent font-medium"
+                  >
+                    Fale com nossos especialistas
+                  </Link>{" "}
+                  e nos conte sobre seu projeto.
+                </p>
+              </div>
+            </motion.div>
           </motion.div>
+
+          {/* Coluna da Direita: Imagem */}
           <motion.div
-            initial="hidden"
-            whileInView="visible"
+            className="md:col-span-6 col-span-12 relative"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, amount: 0.3 }}
-            variants={textVariants}
+            transition={{ duration: 1, ease: "easeOut" }}
           >
             <img
-              src={founderImageUrl}
-              alt="Fundador Danilo Guilherme Alves Martins"
-              className="rounded-lg shadow-xl w-full h-auto object-cover"
+              src={aboutHeroImage}
+              alt="Danilo G. A. Martins - Engenheiro Civil"
+              className="w-full h-auto rounded-lg shadow-xl"
             />
           </motion.div>
         </div>
       </section>
 
-      {/* 3. Seção Formação & Certificações (Fundo 'accent') */}
-      <section className="py-20 bg-accent">
-        {" "}
-        {/* <-- Fundo 'bg-accent' para contraste */}
-        <div className="container mx-auto px-6">
-          <motion.div
-            className="text-center mb-12"
-            variants={textVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-          >
-            <h2 className="text-3xl font-bold text-white">
-              Formação e Certificações
-            </h2>
-          </motion.div>
-
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ staggerChildren: 0.2 }}
-          >
-            {/* Formação (Card com fundo 'theme-dark' para se destacar do 'accent') */}
-            <motion.div
-              variants={textVariants}
-              className="bg-theme-dark p-6 rounded-lg shadow-lg"
-            >
-              <h3 className="text-2xl font-bold text-white mb-4">
-                Formação Acadêmica
-              </h3>
-              <ul className="space-y-3">
-                <li className="flex items-start">
-                  <CertificateIcon />
-                  <span className="text-gray-300">
-                    Cursando Pós-Graduação em Planejamento, Gestão e Controle de
-                    Obras Civis (UFRJ)
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <CertificateIcon />
-                  <span className="text-gray-300">
-                    Pós-Graduação em BIM Manager (PUC/MG)
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <CertificateIcon />
-                  <span className="text-gray-300">
-                    Graduação em Engenharia Civil (Universidade Nove de
-                    Julho/SP)
-                  </span>
-                </li>
-              </ul>
-            </motion.div>
-
-            {/* Certificações (Card com fundo 'theme-dark') */}
-            <motion.div
-              variants={textVariants}
-              className="bg-theme-dark p-6 rounded-lg shadow-lg"
-            >
-              <h3 className="text-2xl font-bold text-white mb-4">
-                Certificações de Destaque
-              </h3>
-              <ul className="space-y-3">
-                <li className="flex items-start">
-                  <CertificateIcon />
-                  <span className="text-gray-300">
-                    Elite PRO: Formação em Engenharia de Avaliações com
-                    Inferência Estatística Aplicada (Instituto de Engenharia de
-                    Elite - 2025)
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <CertificateIcon />
-                  <span className="text-gray-300">
-                    Engenharia de Avaliação de Imóveis Urbanos (IBAPE - 2023)
-                  </span>
-                </li>
-              </ul>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-    </div>
+      {/* 2. Seção de CTA (Mantida) */}
+      <CallToAction />
+    </>
   );
 };

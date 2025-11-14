@@ -1,138 +1,73 @@
-import { motion, Variants, useScroll, useTransform } from "framer-motion"; // <-- Importado useScroll/useTransform
+import { motion, Variants, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
-import { useRef } from "react"; // <-- Importado useRef
+import React, { useRef } from "react";
 
-// Dados mock do blog (sem alteração)
-const blogPosts = [
-  {
-    id: 1,
-    image: "https://via.placeholder.com/800x500/f4f6f8/1a1a1a?text=Infiltração",
-    category: "Manifestações Patológicas",
-    title: "5 Sinais de Infiltração que Você Não Pode Ignorar",
-    link: "/blog/post-1",
-  },
-  {
-    id: 2,
-    image:
-      "https://via.placeholder.com/800x500/f4f6f8/1a1a1a?text=Inspeção+Predial",
-    category: "Inspeção Predial",
-    title: "A Importância da Inspeção Predial Preventiva",
-    link: "/blog/post-2",
-  },
-  {
-    id: 3,
-    image: "https://via.placeholder.com/800x500/f4f6f8/1a1a1a?text=Avaliação",
-    category: "Avaliação de Imóveis",
-    title: "Como é Feita uma Avaliação Técnica de Imóvel?",
-    link: "/blog/post-3",
-  },
-];
-
-// Animação para os cards (Stagger)
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
-  },
-};
-
-// Animação para o container (Stagger)
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.2,
-    },
-  },
-};
+// --- ATUALIZADO: Imagem Real ---
+const blogPreviewImage = "/blog_image.jpg";
 
 export const BlogPreview = () => {
-  const ref = useRef(null); // Referência para a seção
+  const ref = useRef(null);
 
-  // --- NOVOS HOOKS DE ANIMAÇÃO (Sircle) ---
+  // --- HOOKS DE ANIMAÇÃO (Sircle) ---
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "center center"], // Começa quando a seção entra na tela
+    offset: ["start end", "center center"],
   });
 
-  // Animação do Cabeçalho (Fade e Slide)
-  const headerY = useTransform(scrollYProgress, [0, 1], ["30px", "0px"]);
-  const headerOpacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
-
-  // Animação da Grade de Cards (Fade e Slide)
-  const gridY = useTransform(scrollYProgress, [0.1, 1], ["50px", "0px"]);
-  const gridOpacity = useTransform(scrollYProgress, [0.1, 1], [0, 1]);
-  // --- FIM DOS NOVOS HOOKS ---
+  // Animação do Container Flutuante (Zoom e Fade)
+  const containerScale = useTransform(scrollYProgress, [0, 1], [0.9, 1]);
+  const containerOpacity = useTransform(scrollYProgress, [0, 1], [0.5, 1]);
+  // --- FIM HOOKS ---
 
   return (
     <section
-      ref={ref} // Aplicando a referência
-      className="py-20 bg-theme-dark overflow-hidden" // Adicionado overflow-hidden
+      ref={ref}
+      id="blog-preview"
+      className="py-20 bg-theme-dark overflow-hidden" // Fundo cinza-claro
     >
       <div className="container mx-auto px-6">
-        {/* --- Títulos (Animados pelo Scroll) --- */}
+        {/* Container Flutuante (Estilo Pipely) */}
         <motion.div
-          className="text-center mb-12"
+          className="bg-white rounded-2xl shadow-xl p-8 md:p-12"
           style={{
-            // Aplicando animações de scroll
-            y: headerY,
-            opacity: headerOpacity,
+            scale: containerScale,
+            opacity: containerOpacity,
           }}
         >
-          <h4 className="text-lg font-semibold text-primary mb-2">
-            Nosso Blog
-          </h4>
-          <h2 className="text-3xl md:text-4xl font-bold text-white">
-            Artigos Técnicos e Novidades
-          </h2>
-        </motion.div>
+          {/* Grid de 2 colunas: [Texto] [Imagem] */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            {/* Coluna 1: Texto e Botão */}
+            <div>
+              <p className="text-base font-medium text-gray-500 mb-2">
+                // Nosso Conhecimento
+              </p>
+              <h2 className="text-3xl md:text-4xl font-bold text-dark mb-4">
+                Artigos Técnicos e Novidades
+              </h2>
+              <p className="text-lg text-gray-600 mb-8">
+                Acompanhe nossas análises e estudos de caso sobre o setor de
+                engenharia diagnóstica, perícias e inspeções.
+              </p>
 
-        {/* --- Cards (Animados pelo Scroll + Stagger) --- */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible" // Dispara a animação 'visible' do stagger
-          viewport={{ once: true, amount: 0.3 }}
-          style={{
-            // Aplicando animações de scroll
-            y: gridY,
-            opacity: gridOpacity,
-          }}
-        >
-          {blogPosts.map((post) => (
-            <motion.div
-              key={post.id}
-              className="bg-accent rounded-lg shadow-xl overflow-hidden group"
-              variants={cardVariants} // Cards animam (stagger)
-            >
-              <div className="overflow-hidden">
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-              </div>
-              <div className="p-6">
-                <p className="text-sm font-medium text-primary mb-2">
-                  {post.category}
-                </p>
-                <h3 className="text-xl font-bold text-white mb-4 group-hover:text-primary transition-colors">
-                  {post.title}
-                </h3>
+              <motion.div className="inline-block" whileHover={{ scale: 1.05 }}>
                 <Link
-                  to={post.link}
-                  className="font-medium text-primary hover:text-gray-300 transition-colors"
+                  to="/blog"
+                  className="bg-primary text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:bg-accent transition-all duration-300"
                 >
-                  Ler Artigo &rarr;
+                  Ver Todos os Artigos
                 </Link>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            </div>
+
+            {/* Coluna 2: Imagem Grande */}
+            <div className="w-full h-full">
+              <img
+                src={blogPreviewImage} // <-- SUA IMAGEM ESTÁ AQUI
+                alt="Blog Técnico Alves Martins"
+                className="w-full h-full object-cover rounded-lg shadow-lg"
+              />
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>

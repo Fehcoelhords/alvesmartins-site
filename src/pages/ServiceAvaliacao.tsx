@@ -21,7 +21,7 @@ const CheckIcon = () => (
 
 // Placeholder de conteúdo (baseado no PDF)
 const service = {
-  title: "Perícia Avaliatória de Imóveis",
+  title: "Perícia em Avaliação de Imóveis",
   subtitle:
     "Determinando o valor justo do seu patrimônio com precisão técnica.",
   description:
