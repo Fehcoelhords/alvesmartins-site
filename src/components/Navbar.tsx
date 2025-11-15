@@ -1,23 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, Variants, AnimatePresence } from "framer-motion";
 import { AnimatedHamburgerIcon } from "./AnimatedHamburgerIcon";
 import React from "react";
 
-// --- Ícones (Seta e Dropdown) ---
 import { BuildingIcon } from "../assets/icons/BuildingIcon";
 import { RulerIcon } from "../assets/icons/RulerIcon";
 import { SearchIcon } from "../assets/icons/SearchIcon";
 
-// --- Ícone Caret (Seta) ---
+// Ícone seta com mais estilo
 const CaretDownIcon = ({ isOpen }: { isOpen?: boolean }) => (
   <motion.svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
     fill="currentColor"
-    className="w-5 h-5 ml-1 text-dark group-hover:text-primary"
-    animate={{ rotate: isOpen ? 180 : 0 }}
-    transition={{ duration: 0.3 }}
+    animate={{ rotate: isOpen ? 180 : 0, scale: isOpen ? 1.15 : 1 }}
+    transition={{ duration: 0.35, ease: "easeOut" }}
+    className="w-5 h-5 ml-1 text-dark group-hover:text-primary drop-shadow-md"
   >
     <path
       fillRule="evenodd"
@@ -26,7 +25,6 @@ const CaretDownIcon = ({ isOpen }: { isOpen?: boolean }) => (
     />
   </motion.svg>
 );
-// --- FIM Ícones ---
 
 export const Navbar = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -47,8 +45,8 @@ export const Navbar = () => {
       path: "/servicos/avaliacao-de-imoveis",
     },
     {
-      title: "Laudos técnicos",
-      description: "Investigação de falhas construtivas.",
+      title: "Laudos Técnicos",
+      description: "Análises profundas e investigação.",
       icon: <SearchIcon />,
       path: "/servicos/pericia-manifestacoes-patologicas",
     },
@@ -60,114 +58,175 @@ export const Navbar = () => {
     },
   ];
 
-  const mobileMenuVariants: Variants = {
-    open: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
-    closed: {
-      opacity: 0,
-      y: "-10px",
-      transition: { duration: 0.3, ease: "easeIn" },
-    },
-  };
+  // 👉 ANIMAÇÃO EXAGERADA DO DROPDOWN — MUITO LUXO
   const dropdownVariants: Variants = {
     closed: {
       opacity: 0,
-      y: -10,
-      transition: { duration: 0.2 },
-      transitionEnd: { display: "none" },
+      y: -20,
+      scale: 0.95,
+      filter: "blur(6px)",
+      pointerEvents: "none",
+      transition: { duration: 0.35, ease: "easeInOut" },
     },
-    open: { opacity: 1, y: 0, transition: { duration: 0.3 }, display: "block" },
+    open: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      filter: "blur(0px)",
+      pointerEvents: "auto",
+      transition: {
+        duration: 0.45,
+        ease: [0.16, 1, 0.3, 1], // curva mais luxuosa
+      },
+    },
+  };
+
+  // 👉 MOBILE MENU – animação bem suave
+  const mobileMenuVariants: Variants = {
+    open: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.4, ease: "easeOut" },
+    },
+    closed: {
+      opacity: 0,
+      y: -20,
+      transition: { duration: 0.3, ease: "easeIn" },
+    },
   };
 
   const closeAllMenus = () => setIsMobileOpen(false);
 
-  const linkColor = "text-dark";
-  const linkHoverColor = "hover:text-primary";
-
   return (
-    <nav className="sticky top-4 z-50 w-full px-6">
+    <nav className="sticky top-4 z-[9999] w-full px-6">
       <div className="container mx-auto relative">
-        {/* Card 1: O Navbar visível */}
-        <div
-          className="w-full flex justify-between items-center 
-                     py-3 px-6 rounded-lg shadow-lg 
-                     bg-white/80 backdrop-blur-lg border border-white/30"
+        {/* NAVBAR — VIDRO FOSCO LUXUOSO */}
+        <motion.div
+          initial={{ opacity: 0, y: -20, filter: "blur(8px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="
+            w-full flex justify-between items-center 
+            py-3 px-6 rounded-2xl shadow-2xl 
+            bg-white/20 backdrop-blur-xl 
+            border border-white/40 
+            ring-1 ring-white/10
+          "
+          style={{
+            WebkitBackdropFilter: "blur(14px)",
+            backdropFilter: "blur(14px)",
+          }}
         >
-          {/* --- ATUALIZADO: COLUNA 1: Logo (Ícone + Texto) --- */}
-          <div className="flex-shrink-0 z-10">
-            <Link
-              to="/"
-              className="flex items-center gap-3"
-              onClick={() => closeAllMenus()}
-            >
-              <img
-                src="/logotipo.png"
-                alt="Alves Martins Logo"
-                className="h-12 w-auto" // h-12 (48px)
-              />
-              {/* Texto ao lado do logo */}
-              <div>
-                <span className="block text-xl font-bold text-dark leading-tight">
-                  Alves Martins
-                </span>
-                <span className="block text-xs font-medium text-gray-500 leading-tight">
-                  Engenharia & Construção
-                </span>
-              </div>
-            </Link>
-          </div>
+          {/* LOGO */}
+          <Link
+            to="/"
+            className="flex items-center gap-3"
+            onClick={closeAllMenus}
+          >
+            <img src="/logotipo.png" className="h-12 drop-shadow-lg" />
 
-          {/* COLUNA 2: Links (Centro) */}
+            <div className="leading-5">
+              <span className="block text-xl font-bold text-dark drop-shadow-sm">
+                Alves Martins
+              </span>
+              <span className="block text-xs text-blue-500 tracking-wide">
+                Engenharia & Construção
+              </span>
+            </div>
+          </Link>
+
+          {/* Links Desktop */}
           <div className="hidden md:flex flex-1 justify-center space-x-8 items-center">
             {navLinks.map((link) => (
               <div
                 key={link.title}
-                className={`relative group ${linkColor} ${linkHoverColor} transition-colors`}
-                onMouseEnter={() =>
-                  link.title === "Serviços" && setIsDesktopServicesOpen(true)
-                }
-                onMouseLeave={() =>
-                  link.title === "Serviços" && setIsDesktopServicesOpen(false)
-                }
+                className="relative group text-dark hover:text-primary transition-colors"
               >
-                <Link to={link.path} className="font-medium flex items-center">
-                  {link.title}
-                  {link.title === "Serviços" && (
-                    <CaretDownIcon isOpen={isDesktopServicesOpen} />
-                  )}
-                </Link>
+                {/* TRIGGER — NÃO FECHA SOZINHO */}
+                <div
+                  onMouseEnter={() =>
+                    link.title === "Serviços" && setIsDesktopServicesOpen(true)
+                  }
+                >
+                  <Link
+                    to={link.path}
+                    className="font-medium flex items-center"
+                  >
+                    {link.title}
+                    {link.title === "Serviços" && (
+                      <CaretDownIcon isOpen={isDesktopServicesOpen} />
+                    )}
+                  </Link>
+                </div>
 
+                {/* HOVER BRIDGE — ESSA PARTE EVITA QUE O DROPDOWN SUMA RÁPIDO */}
+                {link.title === "Serviços" && (
+                  <div
+                    className="absolute left-0 top-full w-full h-6"
+                    onMouseEnter={() => setIsDesktopServicesOpen(true)}
+                    onMouseLeave={() => setIsDesktopServicesOpen(false)}
+                  />
+                )}
+
+                {/* DROPDOWN PREMIUM */}
                 {link.title === "Serviços" && (
                   <AnimatePresence>
                     {isDesktopServicesOpen && (
                       <motion.div
-                        className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-96 bg-white rounded-md shadow-lg overflow-hidden"
-                        initial="closed"
-                        animate="open"
-                        exit="closed"
-                        variants={dropdownVariants}
+                        className="absolute top-[calc(100%+6px)] left-1/2 -translate-x-1/2 w-96 
+                         bg-white/90 backdrop-blur-xl border border-white/40 rounded-2xl shadow-2xl 
+                         overflow-hidden"
+                        initial={{ opacity: 0, y: -12, scale: 0.98 }}
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                          scale: 1,
+                          transition: {
+                            duration: 0.25,
+                            ease: "easeOut",
+                          },
+                        }}
+                        exit={{
+                          opacity: 0,
+                          y: -10,
+                          scale: 0.97,
+                          transition: {
+                            duration: 0.2,
+                            ease: "easeIn",
+                          },
+                        }}
+                        onMouseEnter={() => setIsDesktopServicesOpen(true)}
+                        onMouseLeave={() => setIsDesktopServicesOpen(false)}
                       >
-                        <div className="p-2">
-                          {premiumServicesLinks.map((service) => (
-                            <Link
+                        <div className="p-3">
+                          {premiumServicesLinks.map((service, i) => (
+                            <motion.div
                               key={service.title}
-                              to={service.path}
-                              className="flex items-center p-4 rounded-lg text-dark hover:bg-secondary transition-colors duration-200"
-                              onClick={() => setIsDesktopServicesOpen(false)}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{
+                                opacity: 1,
+                                x: 0,
+                                transition: { delay: i * 0.08 },
+                              }}
                             >
-                              <div className="flex-shrink-0 text-primary">
-                                {React.cloneElement(service.icon, {
-                                  className: "h-6 w-6",
-                                })}
-                              </div>
-                              <div className="ml-4">
-                                <p className="font-semibold text-sm text-dark">
-                                  {service.title}
-                                </p>
-                                <p className="text-xs text-gray-500">
-                                  {service.description}
-                                </p>
-                              </div>
-                            </Link>
+                              <Link
+                                to={service.path}
+                                className="flex items-center p-4 rounded-xl 
+                                 hover:bg-gray-100 transition-all"
+                              >
+                                <div className="text-primary">
+                                  {service.icon}
+                                </div>
+                                <div className="ml-3">
+                                  <p className="font-semibold text-sm">
+                                    {service.title}
+                                  </p>
+                                  <p className="text-xs text-gray-500">
+                                    {service.description}
+                                  </p>
+                                </div>
+                              </Link>
+                            </motion.div>
                           ))}
                         </div>
                       </motion.div>
@@ -178,66 +237,62 @@ export const Navbar = () => {
             ))}
           </div>
 
-          {/* COLUNA 3: Botões (Direita) */}
-          <div className="flex-shrink-0 z-50">
-            <motion.div
-              className="hidden md:flex"
-              whileHover={{ scale: 1.05, y: -2 }}
-              transition={{ type: "spring", stiffness: 300 }}
+          {/* BOTÃO ORÇAMENTO */}
+          <motion.div
+            className="hidden md:flex"
+            whileHover={{ scale: 1.07, y: -2 }}
+          >
+            <Link
+              to="/contato"
+              className="
+                flex items-center bg-primary text-white px-6 py-3 rounded-xl font-semibold
+                shadow-lg hover:shadow-2xl hover:bg-blue-700 transition-all
+              "
             >
-              <Link
-                to="/contato"
-                className="flex items-center bg-primary text-white px-6 py-3 rounded-lg font-semibold 
-                           shadow-lg hover:shadow-xl hover:bg-accent 
-                           transition-all duration-300 transform"
-              >
-                Orçamento
-                <span aria-hidden="true" className="ml-1.5">
-                  &rarr;
-                </span>
-              </Link>
-            </motion.div>
-            <div className="md:hidden">
-              <button
-                onClick={() => setIsMobileOpen(!isMobileOpen)}
-                aria-label="Abrir menu"
-                className="p-1"
-              >
-                <AnimatedHamburgerIcon isOpen={isMobileOpen} isDark={true} />
-              </button>
-            </div>
-          </div>
-        </div>
+              Orçamento →
+            </Link>
+          </motion.div>
 
-        {/* Card 2: O Menu Mobile */}
+          {/* MOBILE HAMBURGER */}
+          <div className="md:hidden">
+            <button onClick={() => setIsMobileOpen(!isMobileOpen)}>
+              <AnimatedHamburgerIcon isOpen={isMobileOpen} isDark={true} />
+            </button>
+          </div>
+        </motion.div>
+
+        {/* MOBILE MENU */}
         <motion.div
           initial="closed"
           animate={isMobileOpen ? "open" : "closed"}
           variants={mobileMenuVariants}
-          className="md:hidden absolute top-full w-full shadow-xl overflow-hidden bg-white mt-2 rounded-lg"
+          className="
+            md:hidden absolute top-full w-full shadow-xl 
+            bg-white/90 backdrop-blur-xl mt-2 rounded-xl 
+            overflow-hidden border border-white/40
+          "
         >
           <div className="flex flex-col px-6 py-4">
             {navLinks.map((link) => (
               <Link
                 key={link.title}
                 to={link.path}
-                className="text-dark font-medium hover:text-primary transition-colors py-2 text-lg"
-                onClick={() => closeAllMenus()}
+                onClick={closeAllMenus}
+                className="text-dark font-medium hover:text-primary py-3 text-lg"
               >
                 {link.title}
               </Link>
             ))}
+
             <Link
               to="/contato"
-              className="flex items-center justify-center bg-gradient-to-r from-primary to-accent 
-                         text-white text-center mt-4 px-6 py-3 rounded-lg 
-                         font-semibold shadow-lg text-lg"
-              onClick={() => closeAllMenus()}
+              onClick={closeAllMenus}
+              className="
+                bg-gradient-to-r from-primary to-accent text-white 
+                text-center mt-4 px-6 py-3 rounded-xl font-semibold
+              "
             >
-              Orçamento
-              <span aria-hidden="true" className="ml-1.5">
-                &rarr;
-              </span>
+              Orçamento →
             </Link>
           </div>
         </motion.div>

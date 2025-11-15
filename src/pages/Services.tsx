@@ -1,30 +1,41 @@
-import { motion, Variants, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import React, { useRef } from "react";
 import { CallToAction } from "../components/CallToAction";
 
-// --- Ícones ---
+/* =========================================================
+   ÍCONES
+========================================================= */
 const CheckIcon = () => (
-  <svg
-    className="w-5 h-5 text-primary mr-3 flex-shrink-0"
+  <motion.svg
+    className="w-5 h-5 text-white mr-3 flex-shrink-0"
     fill="currentColor"
     viewBox="0 0 20 20"
+    initial={{ scale: 0 }}
+    whileInView={{ scale: 1 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5 }}
   >
     <path
       fillRule="evenodd"
       d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
       clipRule="evenodd"
-    ></path>
-  </svg>
+    />
+  </motion.svg>
 );
+
 const BuildingIcon = () => (
-  <svg
+  <motion.svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
     className="w-16 h-16 mb-4 text-white"
+    initial={{ rotate: -10, opacity: 0 }}
+    whileInView={{ rotate: 0, opacity: 1 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.8 }}
   >
     <path
       strokeLinecap="round"
@@ -36,32 +47,42 @@ const BuildingIcon = () => (
       strokeLinejoin="round"
       d="M12 16.5h.008v.008H12v-.008Zm0-3h.008v.008H12v-.008Zm0-3h.008v.008H12V10.5Zm0-3h.008v.008H12V7.5Z"
     />
-  </svg>
+  </motion.svg>
 );
+
 const RulerIcon = () => (
-  <svg
+  <motion.svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
     className="w-16 h-16 mb-4 text-white"
+    initial={{ rotate: 10, opacity: 0 }}
+    whileInView={{ rotate: 0, opacity: 1 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.8 }}
   >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
       d="M4.5 3.75v16.5M19.5 3.75v16.5M8.25 3.75h7.5m-7.5 4.5h7.5m-7.5 4.5h7.5m-7.5 4.5h7.5"
     />
-  </svg>
+  </motion.svg>
 );
+
 const SearchIcon = () => (
-  <svg
+  <motion.svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
     className="w-16 h-16 mb-4 text-white"
+    initial={{ scale: 0.8, opacity: 0 }}
+    whileInView={{ scale: 1, opacity: 1 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.6 }}
   >
     <path
       strokeLinecap="round"
@@ -69,10 +90,12 @@ const SearchIcon = () => (
       d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
     />
     <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 7.5v6m3-3h-6" />
-  </svg>
+  </motion.svg>
 );
 
-// --- Tipos e Dados ---
+/* =========================================================
+   DADOS DOS SERVIÇOS
+========================================================= */
 interface ServiceItem {
   icon: JSX.Element;
   title: string;
@@ -81,12 +104,13 @@ interface ServiceItem {
   path: string;
   image: string;
 }
+
 const detailedServices: ServiceItem[] = [
   {
     icon: <RulerIcon />,
     title: "Perícia Avaliatória de Imóveis",
     description:
-      "Nossas avaliações seguem rigorosamente as normas da ABNT para determinar o valor de mercado, o valor de liquidação forçada ou o valor de aluguel de propriedades.",
+      "Nossas avaliações seguem rigorosamente as normas da ABNT para determinar o valor de mercado, valor de liquidação forçada ou valor de aluguel.",
     items: [
       "Avaliação para fins judiciais",
       "Definição de valor para compra e venda",
@@ -100,11 +124,11 @@ const detailedServices: ServiceItem[] = [
     icon: <BuildingIcon />,
     title: "Inspeção Predial",
     description:
-      "Realizamos uma vistoria técnica completa para avaliar o estado de conservação e funcionamento da edificação, identificando anomalias e avaliando riscos.",
+      "Vistoria técnica completa para avaliar conservação, funcionamento, riscos e anomalias da edificação.",
     items: [
       "Análise de sistemas estruturais",
-      "Verificação de segurança e acessibilidade",
-      "Elaboração de Laudo de Inspeção (LIP)",
+      "Segurança e acessibilidade",
+      "Laudo de Inspeção (LIP)",
     ],
     path: "/servicos/inspecao-predial",
     image: "https://carluc.com.br/wp-content/uploads/Inspecao-Predial.jpg",
@@ -113,19 +137,17 @@ const detailedServices: ServiceItem[] = [
     icon: <SearchIcon />,
     title: "Perícia em Manifestações Patológicas",
     description:
-      "Investigação técnica aprofundada para identificar a origem, causas e mecanismos de falhas construtivas como fissuras, trincas, infiltrações e umidade.",
-    items: [
-      "Diagnóstico de vícios construtivos",
-      "Análise de infiltrações",
-      "Laudos para recuperação estrutural",
-    ],
+      "Investigação técnica para identificar origem, causas e mecanismos de falhas construtivas como infiltrações, trincas e umidade.",
+    items: ["Vícios construtivos", "Infiltrações", "Laudos estruturais"],
     path: "/servicos/pericia-manifestacoes-patologicas",
     image:
       "https://cdn.prod.website-files.com/5eea5dfef03bd29ec5cd9a27/64023fbda8950b68a93eb1a9_patologias-na-constru%C3%A7%C3%A3o-civil-12.webp",
   },
 ];
 
-// --- Sub-componente: ServiceCard ---
+/* =========================================================
+   CARD PREMIUM
+========================================================= */
 const ServiceCard = ({
   service,
   index,
@@ -137,45 +159,43 @@ const ServiceCard = ({
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "center center"],
-    once: true,
   });
-  const xFrom = index % 2 === 0 ? "-50px" : "50px";
+
+  const xFrom = index % 2 === 0 ? "-120px" : "120px";
   const x = useTransform(scrollYProgress, [0, 1], [xFrom, "0px"]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [0.3, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  const scale = useTransform(scrollYProgress, [0, 1], [0.9, 1]);
 
   return (
     <motion.div
       ref={ref}
-      className="group grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center 
-                 p-8 rounded-2xl shadow-2xl
-                 bg-white/10 backdrop-blur-lg 
-                 border border-white/10 
-                 transition-all duration-300 hover:border-primary"
-      style={{ x, opacity }}
-      whileHover={{ y: -8 }}
+      className="group grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center p-10 rounded-3xl shadow-2xl"
+      style={{ x, opacity, scale, backgroundColor: "rgb(11,30,74)" }}
+      whileHover={{ y: -12, scale: 1.03 }}
+      transition={{ type: "spring", stiffness: 120 }}
     >
       <div
-        className={`w-full ${
+        className={`w-full overflow-hidden rounded-2xl ${
           index % 2 === 1 ? "lg:order-last" : ""
-        } overflow-hidden rounded-lg`}
+        }`}
       >
         <motion.img
           src={service.image}
           alt={service.title}
-          className="w-full h-auto object-cover"
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.3 }}
+          className="w-full h-auto object-cover rounded-2xl shadow-lg"
+          whileHover={{ scale: 1.08 }}
+          transition={{ duration: 0.5 }}
         />
       </div>
-      <div className="w-full">
+
+      <div className="w-full text-white space-y-6">
         {service.icon}
-        <h2 className="text-3xl font-bold text-white mb-4 mt-2">
-          {service.title}
-        </h2>
-        <p className="text-gray-300 leading-relaxed mb-6">
+        <h2 className="text-3xl md:text-4xl font-extrabold">{service.title}</h2>
+        <p className="text-gray-200 text-lg leading-relaxed">
           {service.description}
         </p>
-        <ul className="space-y-3 mb-8">
+
+        <ul className="space-y-3">
           {service.items.map((item) => (
             <li key={item} className="flex items-center text-gray-200">
               <CheckIcon />
@@ -183,12 +203,13 @@ const ServiceCard = ({
             </li>
           ))}
         </ul>
-        <motion.div whileHover={{ x: 5 }}>
+
+        <motion.div whileHover={{ x: 6 }}>
           <Link
             to={service.path}
-            className="text-white font-semibold text-lg transition-all hover:text-primary"
+            className="text-white font-semibold text-lg border-b-2 border-white/50 hover:border-white transition-all"
           >
-            Ver Detalhes do Serviço <span aria-hidden="true">&rarr;</span>
+            Ver Detalhes do Serviço →
           </Link>
         </motion.div>
       </div>
@@ -196,18 +217,22 @@ const ServiceCard = ({
   );
 };
 
+/* =========================================================
+   PÁGINA SERVICES — PREMIUM
+========================================================= */
 export const ServicesPage = () => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
 
   return (
-    <div className="bg-theme-dark text-white">
-      {/* 1. Hero da Página (com Parallax) */}
-      <section ref={ref} className="relative py-40 overflow-hidden">
+    <div className="bg-white text-white overflow-x-hidden">
+      {/* HERO */}
+      <section ref={ref} className="relative pt-[180px] pb-40 overflow-hidden">
         <motion.div
           className="absolute inset-0 z-0"
           style={{
@@ -215,34 +240,47 @@ export const ServicesPage = () => {
             backgroundPosition: "center",
             backgroundSize: "cover",
             y: backgroundY,
+            filter: "brightness(0.5) contrast(1.1)",
           }}
         />
-        <div className="absolute inset-0 bg-theme-dark/70 backdrop-blur-sm z-10"></div>
         <motion.div
+          initial={{ y: 120, opacity: 0, scale: 0.9 }}
+          animate={{ y: 0, opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
           className="container mx-auto px-6 text-center relative z-20"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
         >
-          <h1 className="text-5xl font-bold text-white mb-4">
+          <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-4 drop-shadow-lg">
             Nossas Especialidades
           </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Diagnósticos precisos para a integridade da sua construção.
+          <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto drop-shadow">
+            Diagnósticos precisos e soluções técnicas para a integridade da sua
+            construção.
           </p>
         </motion.div>
       </section>
 
-      {/* 2. Lista de Serviços */}
-      <section className="py-20 bg-theme-dark overflow-hidden">
-        <div className="container mx-auto px-6 space-y-16">
+      {/* SERVIÇOS */}
+      <section className="py-24 bg-gray-50 overflow-hidden">
+        <div className="container mx-auto px-6 space-y-20">
           {detailedServices.map((service, index) => (
-            <ServiceCard key={service.title} service={service} index={index} />
+            <motion.div
+              key={service.title}
+              initial={{ y: 100, opacity: 0, scale: 0.9 }}
+              whileInView={{ y: 0, opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-150px" }}
+              transition={{
+                duration: 0.8,
+                delay: index * 0.25,
+                ease: "easeOut",
+              }}
+            >
+              <ServiceCard service={service} index={index} />
+            </motion.div>
           ))}
         </div>
       </section>
 
-      {/* 3. CTA Reutilizado */}
+      {/* CALL TO ACTION */}
       <CallToAction />
     </div>
   );

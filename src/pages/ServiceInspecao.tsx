@@ -2,9 +2,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import React, { useRef } from "react";
 import { CallToAction } from "../components/CallToAction";
-import { BuildingIcon } from "../assets/icons/BuildingIcon"; // Importa o Ícone
+import { SearchIcon } from "../assets/icons/SearchIcon";
 
-// Ícone de Check
 const CheckIcon = () => (
   <svg
     className="w-5 h-5 text-primary mr-3 flex-shrink-0"
@@ -19,56 +18,56 @@ const CheckIcon = () => (
   </svg>
 );
 
-// Placeholder de conteúdo
 const service = {
-  title: "Inspeção Predial",
+  title: "Inspeção Predial e Diagnóstico Técnico",
   subtitle:
-    "Diagnóstico completo da edificação para garantir segurança e conformidade.",
+    "Analisamos, identificamos e classificamos as patologias construtivas com precisão técnica.",
   description:
-    "Realizamos uma vistoria técnica completa para avaliar o estado de conservação e funcionamento da edificação. O objetivo é identificar anomalias, avaliar riscos e fornecer um plano de manutenção preventiva, garantindo a segurança e a conformidade legal.",
+    "A inspeção predial é um processo técnico essencial para avaliar as condições de segurança, estabilidade e funcionalidade de edificações. Nosso diagnóstico segue rigorosamente as normas da ABNT, com relatório detalhado, fotografias, classificações de risco e recomendações.",
   items: [
-    "Análise de sistemas estruturais, elétricos e hidráulicos.",
-    "Verificação de acessibilidade e segurança contra incêndio.",
-    "Elaboração de Laudo de Inspeção Predial (LIP).",
+    "Identificação e classificação de patologias.",
+    "Relatórios técnicos completos com recomendações.",
+    "Análise de desempenho e vida útil da edificação.",
+    "Classificação de riscos conforme ABNT NBR 16747.",
   ],
-  image:
-    "https://via.placeholder.com/600x400/0056b3/ffffff?text=Inspeção+Predial",
+  image: "/page-service-inspecao.jpg",
 };
 
 export const ServiceInspecao = () => {
   const heroRef = useRef(null);
   const contentRef = useRef(null);
 
-  // Animação Parallax do Hero
   const { scrollYProgress: heroScroll } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
   });
+
   const backgroundY = useTransform(heroScroll, [0, 1], ["0%", "30%"]);
 
-  // Animação "Sircle" do Conteúdo
   const { scrollYProgress: contentScroll } = useScroll({
     target: contentRef,
     offset: ["start end", "center center"],
     once: true,
   });
+
   const contentX = useTransform(contentScroll, [0, 1], ["-50px", "0px"]);
   const contentOpacity = useTransform(contentScroll, [0, 1], [0.3, 1]);
 
   return (
     <div className="bg-theme-dark text-white">
-      {/* 1. Hero da Página (com Parallax) */}
+      {/* HERO PREMIUM PARALLAX */}
       <section ref={heroRef} className="relative py-40 overflow-hidden">
         <motion.div
           className="absolute inset-0 z-0"
           style={{
-            backgroundImage: "url(/page-service-fundo.jpg)",
+            backgroundImage: `url(${service.image})`,
             backgroundPosition: "center",
             backgroundSize: "cover",
             y: backgroundY,
           }}
         />
         <div className="absolute inset-0 bg-theme-dark/70 backdrop-blur-sm z-10"></div>
+
         <motion.div
           className="container mx-auto px-6 text-center relative z-20"
           initial={{ opacity: 0, y: 20 }}
@@ -84,25 +83,26 @@ export const ServiceInspecao = () => {
         </motion.div>
       </section>
 
-      {/* 2. Conteúdo do Serviço (Animado) */}
+      {/* CONTEÚDO */}
       <section ref={contentRef} className="py-20 bg-theme-dark overflow-hidden">
         <div className="container mx-auto px-6">
           <motion.div
             className="grid grid-cols-1 lg:grid-cols-3 gap-12"
             style={{ x: contentX, opacity: contentOpacity }}
           >
-            {/* Coluna Principal: Texto e Itens */}
             <div className="lg:col-span-2">
               <h2 className="text-3xl font-bold text-white mb-6">
                 Sobre este Serviço
               </h2>
+
               <p className="text-gray-300 leading-relaxed text-lg mb-8">
                 {service.description}
               </p>
 
               <h3 className="text-2xl font-bold text-white mb-6">
-                Principais Atividades:
+                O que avaliamos
               </h3>
+
               <ul className="space-y-4">
                 {service.items.map((item) => (
                   <motion.li
@@ -120,19 +120,22 @@ export const ServiceInspecao = () => {
               </ul>
             </div>
 
-            {/* Coluna Lateral: Card "Glass" */}
+            {/* CARD LATERAL */}
             <div className="lg:col-span-1">
               <div className="sticky top-32 p-8 rounded-2xl bg-white/10 backdrop-blur-lg border border-white/10">
                 <div className="text-primary">
-                  <BuildingIcon />
+                  <SearchIcon />
                 </div>
+
                 <h3 className="text-2xl font-bold text-white mt-4 mb-4">
-                  Serviço de Precisão
+                  Diagnóstico Técnico Completo
                 </h3>
+
                 <p className="text-gray-300 mb-6">
-                  Nossos laudos são fundamentados nas normas ABNT e práticas do
-                  IBAPE.
+                  Relatório detalhado, classificação de riscos e recomendações
+                  técnicas conforme normas ABNT.
                 </p>
+
                 <motion.div whileHover={{ scale: 1.05 }}>
                   <Link
                     to="/contato"
@@ -147,7 +150,94 @@ export const ServiceInspecao = () => {
         </div>
       </section>
 
-      {/* 3. CTA Reutilizado */}
+      {/* DESTAQUES */}
+      <section className="py-20 bg-theme-dark/70 backdrop-blur-lg border-t border-white/10">
+        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+          {[
+            { n: "340+", t: "Inspeções realizadas" },
+            { n: "10+", t: "Anos de experiência" },
+            { n: "95%", t: "Casos resolvidos com precisão" },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 + i * 0.2 }}
+              viewport={{ once: true }}
+            >
+              <h3 className="text-5xl font-bold text-primary">{item.n}</h3>
+              <p className="text-gray-300 mt-2">{item.t}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* GALERIA */}
+      <section className="py-20 bg-theme-dark">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl font-bold text-white text-center mb-12">
+            Galeria Técnica
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {["/insp1.jpg", "/insp2.jpg", "/insp3.jpg"].map((img) => (
+              <motion.div
+                key={img}
+                whileHover={{ scale: 1.05 }}
+                className="rounded-xl overflow-hidden shadow-lg"
+              >
+                <img src={img} className="w-full h-64 object-cover" />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TIMELINE */}
+      <section className="py-28 bg-theme-dark border-t border-white/10">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl font-bold text-white text-center mb-16">
+            Processo de Inspeção
+          </h2>
+
+          <div className="space-y-12 max-w-3xl mx-auto">
+            {[
+              {
+                title: "1. Vistoria Inicial",
+                desc: "Identificação visual das anomalias construtivas.",
+              },
+              {
+                title: "2. Testes e Ensaios",
+                desc: "Medições, umidade, termografia, fissuras e outros ensaios.",
+              },
+              {
+                title: "3. Diagnóstico Técnico",
+                desc: "Classificação de riscos e identificação da origem das patologias.",
+              },
+              {
+                title: "4. Relatório Final",
+                desc: "Documento completo conforme ABNT com recomendações.",
+              },
+            ].map((step, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 + index * 0.2 }}
+                viewport={{ once: true }}
+                className="p-6 bg-white/10 border border-white/10 rounded-2xl backdrop-blur-xl"
+              >
+                <h3 className="text-2xl font-bold text-primary">
+                  {step.title}
+                </h3>
+                <p className="text-gray-300 mt-2">{step.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA FINAL */}
       <CallToAction />
     </div>
   );

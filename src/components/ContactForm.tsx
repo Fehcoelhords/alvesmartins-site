@@ -1,86 +1,68 @@
-import { motion, useScroll, useTransform } from "framer-motion"; // <-- Importado useScroll/useTransform
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
-import { useRef } from "react"; // <-- Importado useRef
+import { useRef } from "react";
+import { Mail } from "lucide-react";
 
-// Ícone de Email (Sem alteração)
-const MailIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="w-12 h-12 text-white"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-    />
-  </svg>
-);
+export default function PremiumContactSection() {
+  const ref = useRef(null);
 
-export const ContactForm = () => {
-  const ref = useRef(null); // Referência para a seção
-
-  // --- NOVOS HOOKS DE ANIMAÇÃO (Sircle) ---
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "center center"], // Começa quando a seção entra na tela
+    offset: ["start end", "center center"],
   });
 
-  // Animação do Card (Zoom e Fade)
-  const cardScale = useTransform(scrollYProgress, [0, 1], [0.85, 1]);
-  const cardOpacity = useTransform(scrollYProgress, [0, 1], [0.3, 1]);
-  // --- FIM DOS NOVOS HOOKS ---
+  const cardScale = useTransform(scrollYProgress, [0, 1], [0.9, 1]);
+  const cardOpacity = useTransform(scrollYProgress, [0, 1], [0.4, 1]);
+  const cardY = useTransform(scrollYProgress, [0, 1], [50, 0]);
 
   return (
-    <section
-      ref={ref} // Aplicando a referência
-      className="py-20 bg-theme-dark overflow-hidden" // Adicionado overflow-hidden
-    >
-      <div className="container mx-auto px-6 text-center">
-        {/* Card 'bg-accent' (Animado pelo Scroll) */}
+    <section ref={ref} className="relative py-28 bg-white overflow-hidden">
+      {/* BACKGROUND DECORATIONS */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 right-0 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-accent/10 rounded-full blur-3xl" />
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div
-          className="bg-accent p-12 rounded-lg shadow-xl"
-          style={{
-            // Aplicando animações de scroll
-            scale: cardScale,
-            opacity: cardOpacity,
-          }}
+          style={{ scale: cardScale, opacity: cardOpacity, y: cardY }}
+          className="max-w-3xl mx-auto backdrop-blur-xl bg-white/80 border border-white/30 p-12 rounded-3xl shadow-2xl"
         >
+          {/* ICON */}
           <div className="flex justify-center mb-6">
-            <div className="p-4 bg-primary rounded-full">
-              <MailIcon />
+            <div className="p-5 rounded-full bg-gradient-to-br from-primary to-accent shadow-xl">
+              <Mail className="w-10 h-10 text-white" />
             </div>
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Pronto para Iniciar seu Projeto?
+
+          {/* TITLE */}
+          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
+            Pronto para Iniciar Seu Projeto?
           </h2>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-8">
-            Entre em contato conosco para um diagnóstico preciso ou uma
-            avaliação técnica. Nossa equipe está pronta para atendê-lo.
+
+          {/* SUBTEXT */}
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-10">
+            Entre em contato e receba uma análise profissional e detalhada.
+            Nossa equipe está pronta para transformar sua ideia em realidade com
+            excelência e precisão.
           </p>
+
+          {/* CTA BUTTON */}
           <motion.div
-            whileHover={{ scale: 1.05, y: -2 }}
+            whileHover={{ scale: 1.05, y: -3 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
             <Link
               to="/contato"
-              className="flex items-center justify-center w-max mx-auto bg-gradient-to-r from-primary to-accent text-white 
-                         px-6 py-3 rounded-lg font-semibold shadow-lg 
-                         hover:shadow-xl hover:from-accent hover:to-primary 
-                         transition-all duration-300 transform"
+              className="flex items-center gap-2 justify-center w-max mx-auto px-8 py-4 rounded-xl text-white font-semibold text-lg shadow-xl bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary transition-all duration-300"
             >
-              Solicitar um Orçamento
-              <span aria-hidden="true" className="ml-1.5">
-                &rarr;
-              </span>
+              Solicitar Orçamento
+              <span className="text-2xl">→</span>
             </Link>
           </motion.div>
         </motion.div>
       </div>
     </section>
   );
-};
+}

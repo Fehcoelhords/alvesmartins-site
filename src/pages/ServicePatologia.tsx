@@ -2,7 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import React, { useRef } from "react";
 import { CallToAction } from "../components/CallToAction";
-import { SearchIcon } from "../assets/icons/SearchIcon"; // Importa o Ícone
+import { SearchIcon } from "../assets/icons/SearchIcon";
 
 // Ícone de Check
 const CheckIcon = () => (
@@ -19,34 +19,35 @@ const CheckIcon = () => (
   </svg>
 );
 
-// Placeholder de conteúdo
+// Conteúdo da página – PATOLÓGIA DAS CONSTRUÇÕES
 const service = {
-  title: "Perícia em Manifestações Patológicas",
+  title: "Perícia em Patologia das Construções",
   subtitle:
-    "Investigação aprofundada de falhas construtivas para identificar causas e soluções.",
+    "Identificação, diagnóstico e solução definitiva para manifestações patológicas.",
   description:
-    "Investigação técnica aprofundada para identificar a origem, causas e mecanismos de falhas construtivas como fissuras, trincas, infiltrações, umidade e deslocamentos. Elaboramos laudos periciais detalhados com as soluções corretivas necessárias.",
+    "A perícia em patologia das construções identifica as causas de falhas, danos e deteriorações em edificações, ambientes industriais, casas e obras civis. Aplicamos metodologia científica, ensaios técnicos e rigor normativo para determinar a origem do problema e orientar a solução adequada, garantindo segurança e economia ao cliente.",
   items: [
-    "Diagnóstico de vícios construtivos.",
-    "Análise de infiltrações e problemas de impermeabilização.",
-    "Laudos para recuperação estrutural.",
+    "Identificação e análise de infiltrações, fissuras e trincas.",
+    "Avaliação de falhas estruturais e desplacamentos.",
+    "Diagnóstico da origem de umidade e mofo.",
+    "Ensaios e testes de campo ou laboratoriais.",
+    "Laudo técnico conclusivo com recomendações.",
   ],
-  image:
-    "https://via.placeholder.com/600x400/0056b3/ffffff?text=Manifestações+Patológicas",
+  image: "/page-patologia-fundo.jpg",
 };
 
 export const ServicePatologia = () => {
   const heroRef = useRef(null);
   const contentRef = useRef(null);
 
-  // Animação Parallax do Hero
+  // Parallax do HERO
   const { scrollYProgress: heroScroll } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
   });
   const backgroundY = useTransform(heroScroll, [0, 1], ["0%", "30%"]);
 
-  // Animação "Sircle" do Conteúdo
+  // Entrada animada lateral
   const { scrollYProgress: contentScroll } = useScroll({
     target: contentRef,
     offset: ["start end", "center center"],
@@ -57,18 +58,19 @@ export const ServicePatologia = () => {
 
   return (
     <div className="bg-theme-dark text-white">
-      {/* 1. Hero da Página (com Parallax) */}
+      {/* HERO COM PARALLAX */}
       <section ref={heroRef} className="relative py-40 overflow-hidden">
         <motion.div
           className="absolute inset-0 z-0"
           style={{
-            backgroundImage: "url(/page-service-fundo.jpg)",
+            backgroundImage: `url(${service.image})`,
             backgroundPosition: "center",
             backgroundSize: "cover",
             y: backgroundY,
           }}
         />
         <div className="absolute inset-0 bg-theme-dark/70 backdrop-blur-sm z-10"></div>
+
         <motion.div
           className="container mx-auto px-6 text-center relative z-20"
           initial={{ opacity: 0, y: 20 }}
@@ -84,25 +86,27 @@ export const ServicePatologia = () => {
         </motion.div>
       </section>
 
-      {/* 2. Conteúdo do Serviço (Animado) */}
+      {/* CONTEÚDO PRINCIPAL */}
       <section ref={contentRef} className="py-20 bg-theme-dark overflow-hidden">
         <div className="container mx-auto px-6">
           <motion.div
             className="grid grid-cols-1 lg:grid-cols-3 gap-12"
             style={{ x: contentX, opacity: contentOpacity }}
           >
-            {/* Coluna Principal: Texto e Itens */}
+            {/* Texto */}
             <div className="lg:col-span-2">
               <h2 className="text-3xl font-bold text-white mb-6">
                 Sobre este Serviço
               </h2>
+
               <p className="text-gray-300 leading-relaxed text-lg mb-8">
                 {service.description}
               </p>
 
               <h3 className="text-2xl font-bold text-white mb-6">
-                Principais Atividades:
+                O que entregamos
               </h3>
+
               <ul className="space-y-4">
                 {service.items.map((item) => (
                   <motion.li
@@ -120,25 +124,28 @@ export const ServicePatologia = () => {
               </ul>
             </div>
 
-            {/* Coluna Lateral: Card "Glass" */}
+            {/* CARD LATERAL GLASS */}
             <div className="lg:col-span-1">
               <div className="sticky top-32 p-8 rounded-2xl bg-white/10 backdrop-blur-lg border border-white/10">
                 <div className="text-primary">
                   <SearchIcon />
                 </div>
+
                 <h3 className="text-2xl font-bold text-white mt-4 mb-4">
-                  Serviço de Precisão
+                  Diagnóstico Preciso
                 </h3>
+
                 <p className="text-gray-300 mb-6">
-                  Nossos laudos são fundamentados nas normas ABNT e práticas do
-                  IBAPE.
+                  Identificação completa da origem da patologia e recomendações
+                  técnicas para solução definitiva.
                 </p>
+
                 <motion.div whileHover={{ scale: 1.05 }}>
                   <Link
                     to="/contato"
                     className="block w-full text-center bg-primary text-white font-semibold py-3 rounded-lg shadow-lg hover:bg-accent transition-colors"
                   >
-                    Solicitar Orçamento
+                    Solicitar Análise Técnica
                   </Link>
                 </motion.div>
               </div>
@@ -147,7 +154,110 @@ export const ServicePatologia = () => {
         </div>
       </section>
 
-      {/* 3. CTA Reutilizado */}
+      {/* DESTAQUES */}
+      <section className="py-20 bg-theme-dark/70 backdrop-blur-lg border-t border-white/10">
+        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h3 className="text-5xl font-bold text-primary">340+</h3>
+            <p className="text-gray-300 mt-2">Patologias identificadas</p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h3 className="text-5xl font-bold text-primary">12 anos</h3>
+            <p className="text-gray-300 mt-2">Experiência técnica</p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            viewport={{ once: true }}
+          >
+            <h3 className="text-5xl font-bold text-primary">95%</h3>
+            <p className="text-gray-300 mt-2">Casos resolvidos</p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* GALERIA */}
+      <section className="py-20 bg-theme-dark">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl font-bold text-white text-center mb-12">
+            Galeria Técnica
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="rounded-xl overflow-hidden shadow-lg"
+            >
+              <img src="/patologia1.jpg" className="w-full h-64 object-cover" />
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="rounded-xl overflow-hidden shadow-lg"
+            >
+              <img src="/patologia2.jpg" className="w-full h-64 object-cover" />
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* TIMELINE */}
+      <section className="py-28 bg-theme-dark border-t border-white/10">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl font-bold text-white text-center mb-16">
+            Nosso Processo
+          </h2>
+
+          <div className="space-y-12 max-w-3xl mx-auto">
+            {[
+              {
+                title: "1. Vistoria Técnica Detalhada",
+                desc: "Identificação visual, medições e levantamento das manifestações patológicas.",
+              },
+              {
+                title: "2. Ensaios e Testes",
+                desc: "Aplicação de ensaios técnicos conforme a ABNT, sempre que necessário.",
+              },
+              {
+                title: "3. Análise Diagnóstica",
+                desc: "Determinação da origem da patologia e identificação de falhas construtivas.",
+              },
+              {
+                title: "4. Laudo Técnico",
+                desc: "Emissão de relatório conclusivo detalhado com recomendações para solução.",
+              },
+            ].map((step, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 + index * 0.2 }}
+                viewport={{ once: true }}
+                className="p-6 bg-white/10 border border-white/10 rounded-2xl backdrop-blur-xl"
+              >
+                <h3 className="text-2xl font-bold text-primary">
+                  {step.title}
+                </h3>
+                <p className="text-gray-300 mt-2">{step.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <CallToAction />
     </div>
   );

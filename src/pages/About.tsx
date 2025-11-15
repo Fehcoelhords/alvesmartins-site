@@ -1,156 +1,160 @@
-import { motion, Variants } from "framer-motion";
-import { Link } from "react-router-dom";
-import React from "react";
-import { CallToAction } from "../components/CallToAction";
+import React, { useRef } from "react";
+import { About } from "../components/About";
+import { motion, useScroll, useTransform } from "framer-motion";
 
-// Placeholders para as imagens (coloque na pasta /public/)
-const aboutHeroImage =
-  "https://via.placeholder.com/800x800/1e3a8a/ffffff?text=Danilo+G.+A.+Martins";
-const profileImg1 =
-  "https://via.placeholder.com/150x150/0056b3/ffffff?text=Cliente+1";
-const profileImg2 =
-  "https://via.placeholder.com/150x150/1e3a8a/ffffff?text=Cliente+2";
-const profileImg3 =
-  "https://via.placeholder.com/150x150/0056b3/ffffff?text=Cliente+3";
+const AboutPage = () => {
+  // --- Scroll Hooks para seções adicionais ---
+  const missionRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: missionProgress } = useScroll({
+    target: missionRef,
+    offset: ["start end", "center center"],
+  });
 
-// --- NOVAS VARIANTES DE ANIMAÇÃO ---
+  const scaleMission = useTransform(missionProgress, [0, 1], [0.8, 1]);
+  const opacityMission = useTransform(missionProgress, [0, 1], [0, 1]);
+  const xMission = useTransform(missionProgress, [0, 1], ["-50px", "0px"]);
 
-// 1. Animação "Tracking-in-Contract-Bck-Top" (para o H1)
-// Traduzido do seu CSS
-const trackingVariant: Variants = {
-  hidden: {
-    letterSpacing: "1em", // <-- ATUALIZADO
-    transform: "translateZ(400px) translateY(-300px)", // <-- ATUALIZADO
-    opacity: 0,
-  },
-  visible: {
-    letterSpacing: "0em", // <-- ATUALIZADO
-    transform: "translateZ(0px) translateY(0px)", // <-- ATUALIZADO
-    opacity: 1,
-    transition: { duration: 1.2, ease: [0.1, 0.7, 0.3, 1], delay: 0.2 }, // Duração ajustada
-  },
-};
-
-// 2. Animação "Slide-in" (para o resto do conteúdo)
-const slideInVariant: Variants = {
-  hidden: { opacity: 0, x: -50 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.8, ease: "easeOut" },
-  },
-};
-// --- FIM DAS VARIANTES ---
-
-export const AboutPage = () => {
   return (
-    <>
-      {/* 1. Seção Hero (Traduzida do seu código) */}
-      <section className="relative pt-44 pb-20 bg-white dark:bg-darklight">
-        <div className="container mx-auto max-w-6xl px-4 grid grid-cols-12 gap-8 relative z-10">
-          {/* Coluna da Esquerda: Texto */}
+    <main className="flex flex-col flex-grow bg-gray-50 overflow-hidden">
+      {/* --- Seção principal: About animado --- */}
+      <About />
+
+      {/* --- Seção Missão, Visão e Valores (Animada) --- */}
+      <motion.section
+        ref={missionRef}
+        style={{ scale: scaleMission, opacity: opacityMission, x: xMission }}
+        className="py-20 bg-gray-50 relative overflow-hidden"
+      >
+        {/* Linhas técnicas de background (efeito engenharia) */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="w-full h-full bg-grid-pattern opacity-10" />
+        </div>
+
+        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center relative z-10">
           <motion.div
-            className="md:col-span-6 col-span-12 space-y-6 flex flex-col items-start justify-center"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ staggerChildren: 0.1 }}
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="p-6 bg-white rounded-2xl shadow-2xl hover:shadow-3xl transition-shadow duration-500"
           >
-            {/* topper */}
-            <motion.div
-              className="flex gap-2 items-center"
-              variants={slideInVariant}
-            >
-              <span className="w-3 h-3 rounded-full bg-primary"></span>
-              <span className="font-medium text-dark text-sm">
-                Engenheiro Civil | CREA-SP: 5069948539
-              </span>
-            </motion.div>
-
-            {/* Título H1 com a nova animação */}
-            <motion.h1
-              className="text-dark font-bold text-4xl md:text-5xl md:leading-[1.15]"
-              variants={trackingVariant} // <-- APLICADO AQUI
-            >
-              Danilo G. A. Martins: Mais de 10 Anos de Atuação
-            </motion.h1>
-
-            {/* Parágrafo */}
-            <motion.p
-              className="text-gray-600 text-xl font-semibold"
-              variants={slideInVariant}
-            >
-              Engenharia Diagnóstica com Rigor Técnico.
-            </motion.p>
-
-            {/* Botão */}
-            <motion.div variants={slideInVariant}>
-              <motion.div whileHover={{ scale: 1.05 }} className="inline-block">
-                <Link
-                  to="/servicos"
-                  className="py-3 bg-primary text-white rounded-md hover:bg-accent transition duration-300 px-8 font-semibold"
-                >
-                  Conheça os Serviços
-                </Link>
-              </motion.div>
-            </motion.div>
-
-            {/* Grupo de Avatares */}
-            <motion.div
-              className="flex items-center mt-12 gap-4"
-              variants={slideInVariant}
-            >
-              <div className="flex items-center">
-                <img
-                  src={profileImg1}
-                  alt="Cliente 1"
-                  className="w-10 h-10 rounded-full border-2 border-solid border-white -ml-0 shadow-md"
-                />
-                <img
-                  src={profileImg2}
-                  alt="Cliente 2"
-                  className="w-10 h-10 rounded-full border-2 border-solid border-white -ml-3 shadow-md"
-                />
-                <img
-                  src={profileImg3}
-                  alt="Cliente 3"
-                  className="w-10 h-10 rounded-full border-2 border-solid border-white -ml-3 shadow-md"
-                />
-              </div>
-              <div>
-                <p className="text-sm font-normal text-gray-500 max-w-56">
-                  Precisa de um laudo?{" "}
-                  <Link
-                    to="/contato"
-                    className="text-primary hover:text-accent font-medium"
-                  >
-                    Fale com nossos especialistas
-                  </Link>{" "}
-                  e nos conte sobre seu projeto.
-                </p>
-              </div>
-            </motion.div>
+            <h3 className="text-xl font-semibold text-primary mb-4">Missão</h3>
+            <p className="text-gray-600">
+              Fornecer soluções de engenharia diagnóstica precisas e confiáveis,
+              garantindo segurança e eficiência em cada projeto.
+            </p>
           </motion.div>
 
-          {/* Coluna da Direita: Imagem */}
           <motion.div
-            className="md:col-span-6 col-span-12 relative"
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 1, ease: "easeOut" }}
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+            className="p-6 bg-white rounded-2xl shadow-2xl hover:shadow-3xl transition-shadow duration-500"
+          >
+            <h3 className="text-xl font-semibold text-primary mb-4">Visão</h3>
+            <p className="text-gray-600">
+              Ser referência nacional em perícias, inspeções prediais e
+              avaliações técnicas, reconhecida pela qualidade e inovação.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+            className="p-6 bg-white rounded-2xl shadow-2xl hover:shadow-3xl transition-shadow duration-500"
+          >
+            <h3 className="text-xl font-semibold text-primary mb-4">Valores</h3>
+            <p className="text-gray-600">
+              Ética, transparência, inovação e compromisso com a excelência em
+              cada serviço prestado.
+            </p>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* --- Seção Diferenciais (Com efeitos exagerados) --- */}
+      <section className="py-20 bg-white relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <motion.div
+            initial={{ rotate: 45, scale: 0 }}
+            whileInView={{ rotate: 0, scale: 1 }}
+            transition={{ duration: 1, ease: "easeInOut" }}
+            className="w-1/2 h-1/2 border-t-4 border-r-4 border-primary opacity-20 absolute top-0 left-1/3"
+          />
+          <motion.div
+            initial={{ rotate: -45, scale: 0 }}
+            whileInView={{ rotate: 0, scale: 1 }}
+            transition={{ duration: 1, ease: "easeInOut", delay: 0.3 }}
+            className="w-1/2 h-1/2 border-b-4 border-l-4 border-primary opacity-20 absolute bottom-0 right-1/3"
+          />
+        </div>
+
+        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
+          <motion.div
+            initial={{ x: -100, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-dark mb-6">
+              Nossos Diferenciais
+            </h2>
+            <ul className="space-y-4 text-gray-600">
+              <li>✔ Equipe altamente qualificada e certificada</li>
+              <li>✔ Tecnologias modernas e equipamentos de ponta</li>
+              <li>✔ Relatórios detalhados e fundamentados em normas ABNT</li>
+              <li>✔ Atendimento personalizado e consultivo</li>
+              <li>✔ Mais de 10 anos de experiência no mercado</li>
+            </ul>
+          </motion.div>
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+            className="overflow-hidden rounded-2xl shadow-2xl hover:shadow-3xl"
           >
             <img
-              src={aboutHeroImage}
-              alt="Danilo G. A. Martins - Engenheiro Civil"
-              className="w-full h-auto rounded-lg shadow-xl"
+              src="https://images.unsplash.com/photo-1581092795366-07c5b510b6c4?auto=format&fit=crop&w=800&q=80"
+              alt="Diferenciais Alves Martins"
+              className="w-full h-full object-cover aspect-square hover:scale-105 transition-transform duration-500"
             />
           </motion.div>
         </div>
       </section>
 
-      {/* 2. Seção de CTA (Mantida) */}
-      <CallToAction />
-    </>
+      {/* --- Call to Action animada --- */}
+      <motion.section
+        className="py-20 bg-primary text-white text-center overflow-hidden"
+        initial={{ scale: 0.9, opacity: 0 }}
+        whileInView={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 1, ease: "easeInOut" }}
+      >
+        <motion.h2
+          className="text-3xl md:text-4xl font-bold mb-6"
+          initial={{ y: 50, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          Pronto para iniciar seu projeto?
+        </motion.h2>
+        <motion.p
+          className="mb-8"
+          initial={{ y: 50, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          Entre em contato com nossa equipe especializada e receba um orçamento
+          detalhado.
+        </motion.p>
+        <motion.a
+          href="/contato"
+          className="bg-white text-primary font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl hover:bg-gray-100 transition-all duration-300 inline-block"
+          whileHover={{ scale: 1.05, rotate: 1 }}
+        >
+          Solicitar Orçamento
+        </motion.a>
+      </motion.section>
+    </main>
   );
 };
+
+export default AboutPage;
