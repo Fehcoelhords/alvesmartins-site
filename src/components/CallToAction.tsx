@@ -1,103 +1,117 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { useRef } from "react";
+// 🚨 AQUI ESTÁ A CORREÇÃO: Usamos 'lucide-react' em vez de 'react-icons'
+import { ArrowRight, Home, ClipboardCheck, HardHat } from "lucide-react";
 
-// Ícone de Email animado
-const MailIcon = () => (
-  <motion.svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="w-12 h-12 text-white"
-    whileHover={{ rotate: [0, 10, -10, 0], scale: 1.2 }}
-    transition={{ duration: 1, repeat: Infinity }}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-    />
-  </motion.svg>
-);
-
-export const CallToAction = () => {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "center center"],
-  });
-
-  // Efeitos de scroll: escala, opacidade e leve rotação
-  const cardScale = useTransform(scrollYProgress, [0, 1], [0.85, 1]);
-  const cardOpacity = useTransform(scrollYProgress, [0, 1], [0.3, 1]);
-  const cardRotate = useTransform(scrollYProgress, [0, 1], [-3, 0]);
-
+const CallToAction: React.FC = () => {
   return (
-    <section
-      ref={ref}
-      className="py-24 relative overflow-hidden bg-gradient-to-r from-gray-900 to-gray-800"
-    >
-      {/* --- Background tecnológico animado --- */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        style={{ rotate: cardRotate, opacity: cardOpacity }}
-      >
-        {/* Linhas e grids sutis */}
-        <div className="w-full h-full bg-grid-pattern opacity-20" />
-        <motion.div
-          className="absolute w-full h-full bg-gradient-to-tr from-primary/10 to-accent/10"
-          animate={{ rotate: [0, 360] }}
-          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-        />
-      </motion.div>
+    <section className="relative py-28 overflow-hidden bg-[#020F1F]">
+      {/* BACKGROUND ANIMADO */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-[#020F1F]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A2B4D] via-[#004e92] to-[#000428] opacity-60 bg-[length:200%_200%] animate-gradient-xy mix-blend-screen" />
+        <div className="absolute inset-0 bg-[url('/grid-pattern.png')] opacity-20 mix-blend-overlay" />
+      </div>
 
-      <div className="container mx-auto px-6 relative z-10 text-center">
+      <div className="container relative z-10 max-w-5xl mx-auto px-6 text-center">
+        {/* ======================================================== */}
+        {/* ÍCONES FLUTUANTES (ELEMENTOS BRANCOS DE ENGENHARIA)      */}
+        {/* ======================================================== */}
+
+        {/* Ícone Casa (Esquerda) */}
         <motion.div
-          className="bg-gradient-to-r from-primary to-accent p-14 rounded-3xl shadow-2xl shadow-accent/40 border border-white/10"
-          style={{ scale: cardScale, opacity: cardOpacity }}
-          initial={{ y: 50 }}
-          whileInView={{ y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-12 left-0 md:-left-12 text-white/10 md:text-white/20 z-0"
         >
-          <div className="flex justify-center mb-6">
-            <div className="p-5 bg-white/10 backdrop-blur-md rounded-full shadow-lg">
-              <MailIcon />
-            </div>
-          </div>
-          <motion.h2
-            className="text-3xl md:text-5xl font-bold text-white mb-4"
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            Pronto para Iniciar seu Projeto?
-          </motion.h2>
-          <motion.p
-            className="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto mb-8 leading-relaxed"
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            Entre em contato conosco para um diagnóstico preciso ou uma
-            avaliação técnica. Nossa equipe está pronta para atendê-lo com
-            excelência e tecnologia de ponta.
-          </motion.p>
+          <Home size={120} strokeWidth={1.5} />
+        </motion.div>
+
+        {/* Ícone Prancheta (Direita) */}
+        <motion.div
+          animate={{ y: [0, 20, 0], rotate: [0, -5, 0] }}
+          transition={{
+            duration: 7,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1,
+          }}
+          className="absolute -bottom-12 right-0 md:-right-12 text-white/10 md:text-white/20 z-0"
+        >
+          <ClipboardCheck size={140} strokeWidth={1.5} />
+        </motion.div>
+
+        {/* Ícone Capacete (Topo Direita - Pequeno) */}
+        <motion.div
+          animate={{ y: [0, -10, 0] }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2,
+          }}
+          className="absolute top-0 right-20 text-accent-cyan/30 blur-sm"
+        >
+          <HardHat size={60} strokeWidth={2} />
+        </motion.div>
+
+        {/* CARD PRINCIPAL */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="
+            relative z-10
+            bg-[#0A2B4D]/40 backdrop-blur-2xl 
+            border border-white/20 border-t-white/40
+            rounded-3xl p-12 md:p-20 shadow-2xl 
+            overflow-hidden group
+          "
+        >
+          {/* Shine Effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-[200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out pointer-events-none" />
+
           <motion.div
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 300 }}
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="inline-flex items-center justify-center py-1.5 px-5 rounded-full border border-white/30 bg-white/5 shadow-[0_0_15px_rgba(255,255,255,0.1)] mb-8"
           >
+            <span className="text-white font-bold uppercase tracking-widest text-xs flex items-center gap-2">
+              <span className="w-2 h-2 bg-accent-cyan rounded-full animate-pulse"></span>
+              Engenharia de Excelência
+            </span>
+          </motion.div>
+
+          <h2 className="text-4xl md:text-6xl font-heading font-extrabold text-white mb-8 leading-tight drop-shadow-2xl">
+            Pronto para elevar a <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-accent-cyan">
+              segurança do seu imóvel?
+            </span>
+          </h2>
+
+          <p className="text-lg md:text-xl text-gray-200 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
+            Não deixe para depois. Conecte-se com nossa tecnologia e obtenha
+            laudos técnicos com precisão absoluta e agilidade.
+          </p>
+
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link
               to="/contato"
-              className="flex items-center justify-center w-max mx-auto bg-gradient-to-r from-white/90 to-white/70 text-primary px-8 py-4 rounded-xl font-semibold shadow-xl hover:shadow-2xl hover:from-accent hover:to-primary transition-all duration-300 transform text-lg md:text-xl"
+              className="
+                relative inline-flex items-center gap-4 px-12 py-5 
+                bg-white text-[#0A2B4D] 
+                font-heading font-extrabold text-lg rounded-xl 
+                shadow-[0_0_30px_rgba(255,255,255,0.3)] 
+                hover:shadow-[0_0_50px_rgba(0,212,255,0.5)]
+                transition-all duration-300
+                group/btn
+              "
             >
-              Solicitar um Orçamento
-              <span aria-hidden="true" className="ml-2 text-2xl">
-                &rarr;
-              </span>
+              <span className="relative z-10">Falar com um Engenheiro</span>
+              <ArrowRight className="relative z-10 text-xl transition-transform group-hover/btn:translate-x-1" />
             </Link>
           </motion.div>
         </motion.div>
@@ -105,3 +119,5 @@ export const CallToAction = () => {
     </section>
   );
 };
+
+export default CallToAction;

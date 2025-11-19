@@ -1,21 +1,30 @@
-import { Hero } from "../components/Hero";
-import { Services } from "../components/Services";
-import { About } from "../components/About";
-// import { Stats } from '../components/Stats'; // REMOVIDO
-// import { Testimonials } from '../components/Testimonials'; // REMOVIDO
-import { BlogPreview } from "../components/BlogPreview";
-import ContactForm from "../components/ContactForm";
+import React, { useEffect } from "react";
+import Hero from "../components/Hero";
+import Services from "../components/Services";
+import About from "../components/About";
+import CallToAction from "../components/CallToAction";
+import Footer from "../components/Footer";
+import BlogPreview from "../components/BlogPreview";
 
-export const Home = () => {
+const Home: React.FC = () => {
+  useEffect(() => {
+    document.title =
+      "Alves Martins Engenharia | Avaliação, Inspeção e Patologia";
+  }, []);
+
   return (
-    <main>
+    <>
       <Hero />
+
+      {/* A seção Serviços agora tem ID='services' e fundo azul dentro do componente */}
       <Services />
+
       <About />
-      {/* <Stats /> REMOVIDO */}
-      {/* <Testimonials /> REMOVIDO */}
       <BlogPreview />
-      <ContactForm />
-    </main>
+      <CallToAction />
+      <Footer />
+    </>
   );
 };
+
+export default Home;

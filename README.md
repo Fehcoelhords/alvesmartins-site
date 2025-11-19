@@ -1,73 +1,72 @@
-# React + TypeScript + Vite
+# 🛠️ Alves Martins Engenharia - Site Institucional
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este projeto foi desenvolvido utilizando **React**, **TypeScript**, **Vite** e **Tailwind CSS** para criar um site institucional moderno, rápido e focado em engenharia diagnóstica (Avaliação, Inspeção e Patologia).
 
-Currently, two official plugins are available:
+## Requisitos de Instalação
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Certifique-se de ter o [Node.js](https://nodejs.org/) instalado em sua máquina.
 
-## React Compiler
+## Primeiros Passos
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1.  **Clonar o Repositório:**
 
-## Expanding the ESLint configuration
+    ```bash
+    git clone [SEU_REPOSITORIO_AQUI]
+    cd [pasta-do-projeto]
+    ```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+2.  **Instalar Dependências:**
+    Instale todas as dependências do projeto (incluindo `tailwindcss`, `autoprefixer`, `framer-motion`, `react-router-dom`, `react-icons` e `react-intersection-observer`).
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+    ```bash
+    npm install
+    ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+3.  **Variáveis de Ambiente:**
+    Crie o arquivo `.env.local` na raiz do projeto (veja a seção de configuração abaixo).
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+4.  **Iniciar o Servidor de Desenvolvimento:**
+    ```bash
+    npm run dev
+    ```
+    O site estará acessível em `http://localhost:5173` (ou porta similar).
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Scripts Disponíveis
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Comando           | Descrição                                            |
+| :---------------- | :--------------------------------------------------- |
+| `npm run dev`     | Inicia o servidor de desenvolvimento com hot-reload. |
+| `npm run build`   | Constrói a aplicação para produção na pasta `dist`.  |
+| `npm run preview` | Serve o build de produção localmente para teste.     |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🎨 Notas de Design (Tokens)
+
+O design segue uma paleta e tipografia definidas para a marca Alves Martins Engenharia.
+
+| Token                | Cor/Fonte                         | Uso Principal                                         |
+| :------------------- | :-------------------------------- | :---------------------------------------------------- |
+| `colors.primary`     | `#0A2B4D` (azul-marinho-perolado) | Headers, Background de Hero (Overlay), CTA principal. |
+| `colors.accent`      | `#2E6DA4` (azul-claro-acento)     | Botões, Destaques, Links, Hover.                      |
+| `colors.light`       | `#F4F6F8` (cinza-claro)           | Background de seções.                                 |
+| `fontFamily.heading` | Montserrat                        | Títulos (H1, H2, H3) - Peso Bold.                     |
+| `fontFamily.body`    | Inter/Roboto                      | Texto de corpo e parágrafos.                          |
+
+Estes tokens estão configurados em `tailwind.config.js`.
+
+## 🔒 Variáveis de Configuração
+
+### `.env.local`
+
+Para configurar variáveis de ambiente (URLs de serviço, telefones, etc.), crie este arquivo:
+
+```ini
+# Variáveis de Ambiente para Alves Martins Engenharia
+
+# O VITE_ prefix é obrigatório para variáveis acessíveis no frontend via import.meta.env
+VITE_WHATSAPP_NUMBER=5511999998888
+VITE_EMAIL_CONTACT=contato@alvesmartinsengenharia.com.br
+
+# Placeholder para o futuro endpoint do formulário de contato
+# Para a versão inicial, o formulário usa 'mailto:', mas deve ser atualizado para um backend seguro.
+VITE_CONTACT_FORM_ENDPOINT=/api/v1/contact
 ```

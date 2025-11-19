@@ -1,264 +1,146 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Link } from "react-router-dom";
-import React, { useRef } from "react";
-import { CallToAction } from "../components/CallToAction";
-import { SearchIcon } from "../assets/icons/SearchIcon";
+import React, { useEffect } from "react";
+import { motion } from "framer-motion";
+import CallToAction from "../components/CallToAction";
+import Footer from "../components/Footer";
+import { FaMicroscope, FaImage } from "react-icons/fa";
+import { MdBrokenImage } from "react-icons/md";
 
-// Ícone de Check
-const CheckIcon = () => (
-  <svg
-    className="w-5 h-5 text-primary mr-3 flex-shrink-0"
-    fill="currentColor"
-    viewBox="0 0 20 20"
-  >
-    <path
-      fillRule="evenodd"
-      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-      clipRule="evenodd"
-    ></path>
-  </svg>
-);
+const ServicePatologia: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.title = "Patologia das Construções | Alves Martins Engenharia";
+  }, []);
 
-// Conteúdo da página – PATOLÓGIA DAS CONSTRUÇÕES
-const service = {
-  title: "Perícia em Patologia das Construções",
-  subtitle:
-    "Identificação, diagnóstico e solução definitiva para manifestações patológicas.",
-  description:
-    "A perícia em patologia das construções identifica as causas de falhas, danos e deteriorações em edificações, ambientes industriais, casas e obras civis. Aplicamos metodologia científica, ensaios técnicos e rigor normativo para determinar a origem do problema e orientar a solução adequada, garantindo segurança e economia ao cliente.",
-  items: [
-    "Identificação e análise de infiltrações, fissuras e trincas.",
-    "Avaliação de falhas estruturais e desplacamentos.",
-    "Diagnóstico da origem de umidade e mofo.",
-    "Ensaios e testes de campo ou laboratoriais.",
-    "Laudo técnico conclusivo com recomendações.",
-  ],
-  image: "/page-patologia-fundo.jpg",
-};
-
-export const ServicePatologia = () => {
-  const heroRef = useRef(null);
-  const contentRef = useRef(null);
-
-  // Parallax do HERO
-  const { scrollYProgress: heroScroll } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const backgroundY = useTransform(heroScroll, [0, 1], ["0%", "30%"]);
-
-  // Entrada animada lateral
-  const { scrollYProgress: contentScroll } = useScroll({
-    target: contentRef,
-    offset: ["start end", "center center"],
-    once: true,
-  });
-  const contentX = useTransform(contentScroll, [0, 1], ["-50px", "0px"]);
-  const contentOpacity = useTransform(contentScroll, [0, 1], [0.3, 1]);
+  // --- DADOS PROVISÓRIOS ---
+  const cmsData = {
+    heroTitle: "Título Principal da Patologia de Construções",
+    heroSubtitle:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum.",
+    problemsTitle: "Problemas que Resolvemos",
+    problems: [
+      {
+        title: "Problema Exemplo 1",
+        desc: "Descrição breve do problema (ex: Fissuras).",
+      },
+      {
+        title: "Problema Exemplo 2",
+        desc: "Descrição breve do problema (ex: Infiltrações).",
+      },
+      {
+        title: "Problema Exemplo 3",
+        desc: "Descrição breve do problema (ex: Corrosão).",
+      },
+      {
+        title: "Problema Exemplo 4",
+        desc: "Descrição breve do problema (ex: Fachadas).",
+      },
+    ],
+    ctaText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur aliquet quam id dui posuere blandit.",
+  };
 
   return (
-    <div className="bg-theme-dark text-white">
-      {/* HERO COM PARALLAX */}
-      <section ref={heroRef} className="relative py-40 overflow-hidden">
-        <motion.div
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: `url(${service.image})`,
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            y: backgroundY,
-          }}
-        />
-        <div className="absolute inset-0 bg-theme-dark/70 backdrop-blur-sm z-10"></div>
+    <div className="bg-white font-body">
+      {/* HERO SECTION */}
+      <header className="relative h-[70vh] min-h-[600px] flex items-center overflow-hidden bg-primary-dark">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1581093450021-4a7360e9a6b5?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-overlay" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#020F1F] to-[#0A2B4D]/90" />
+        </div>
 
-        <motion.div
-          className="container mx-auto px-6 text-center relative z-20"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h1 className="text-5xl font-bold text-white mb-4">
-            {service.title}
-          </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            {service.subtitle}
-          </p>
-        </motion.div>
-      </section>
-
-      {/* CONTEÚDO PRINCIPAL */}
-      <section ref={contentRef} className="py-20 bg-theme-dark overflow-hidden">
-        <div className="container mx-auto px-6">
+        <div className="relative z-10 container max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center pt-20">
           <motion.div
-            className="grid grid-cols-1 lg:grid-cols-3 gap-12"
-            style={{ x: contentX, opacity: contentOpacity }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
           >
-            {/* Texto */}
-            <div className="lg:col-span-2">
-              <h2 className="text-3xl font-bold text-white mb-6">
-                Sobre este Serviço
+            <div className="flex items-center gap-2 text-accent-cyan font-bold tracking-widest uppercase text-sm mb-4">
+              <FaMicroscope className="text-lg" /> Categoria do Serviço
+            </div>
+            <h1 className="text-4xl md:text-6xl font-heading font-extrabold text-white mb-6 leading-tight">
+              {cmsData.heroTitle}
+            </h1>
+            <p className="text-lg text-gray-300 leading-relaxed">
+              {cmsData.heroSubtitle}
+            </p>
+          </motion.div>
+
+          {/* PLACEHOLDER DE IMAGEM */}
+          <motion.div
+            initial={{ x: 100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="hidden md:block relative"
+          >
+            <div className="w-full aspect-square bg-white/5 backdrop-blur-md border-2 border-dashed border-white/30 rounded-2xl flex flex-col items-center justify-center text-white/50 hover:bg-white/10 transition-colors">
+              <FaImage className="text-6xl mb-4" />
+              <span className="text-sm font-bold uppercase tracking-widest">
+                Imagem Ilustrativa
+              </span>
+              <span className="text-xs mt-1">
+                (Ex: Foto de Fissura ou Diagrama)
+              </span>
+            </div>
+          </motion.div>
+        </div>
+      </header>
+
+      {/* CONTEÚDO */}
+      <section className="py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Lista de Problemas */}
+            <div>
+              <h2 className="text-4xl font-heading font-bold text-primary mb-8">
+                {cmsData.problemsTitle}
               </h2>
-
-              <p className="text-gray-300 leading-relaxed text-lg mb-8">
-                {service.description}
-              </p>
-
-              <h3 className="text-2xl font-bold text-white mb-6">
-                O que entregamos
-              </h3>
-
-              <ul className="space-y-4">
-                {service.items.map((item) => (
-                  <motion.li
-                    key={item}
-                    className="flex items-center text-gray-200 text-lg"
+              <div className="space-y-6">
+                {cmsData.problems.map((prob, i) => (
+                  <motion.div
+                    key={i}
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5 }}
-                    viewport={{ once: true, amount: 0.5 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.15 }}
+                    className="flex gap-4 group"
                   >
-                    <CheckIcon />
-                    <span>{item}</span>
-                  </motion.li>
+                    <div className="mt-1">
+                      <MdBrokenImage className="text-2xl text-gray-400 group-hover:text-accent transition-colors" />
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold text-primary group-hover:text-accent transition-colors">
+                        {prob.title}
+                      </h4>
+                      <p className="text-gray-600">{prob.desc}</p>
+                    </div>
+                  </motion.div>
                 ))}
-              </ul>
-            </div>
-
-            {/* CARD LATERAL GLASS */}
-            <div className="lg:col-span-1">
-              <div className="sticky top-32 p-8 rounded-2xl bg-white/10 backdrop-blur-lg border border-white/10">
-                <div className="text-primary">
-                  <SearchIcon />
-                </div>
-
-                <h3 className="text-2xl font-bold text-white mt-4 mb-4">
-                  Diagnóstico Preciso
-                </h3>
-
-                <p className="text-gray-300 mb-6">
-                  Identificação completa da origem da patologia e recomendações
-                  técnicas para solução definitiva.
-                </p>
-
-                <motion.div whileHover={{ scale: 1.05 }}>
-                  <Link
-                    to="/contato"
-                    className="block w-full text-center bg-primary text-white font-semibold py-3 rounded-lg shadow-lg hover:bg-accent transition-colors"
-                  >
-                    Solicitar Análise Técnica
-                  </Link>
-                </motion.div>
               </div>
             </div>
-          </motion.div>
-        </div>
-      </section>
 
-      {/* DESTAQUES */}
-      <section className="py-20 bg-theme-dark/70 backdrop-blur-lg border-t border-white/10">
-        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-5xl font-bold text-primary">340+</h3>
-            <p className="text-gray-300 mt-2">Patologias identificadas</p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-5xl font-bold text-primary">12 anos</h3>
-            <p className="text-gray-300 mt-2">Experiência técnica</p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-5xl font-bold text-primary">95%</h3>
-            <p className="text-gray-300 mt-2">Casos resolvidos</p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* GALERIA */}
-      <section className="py-20 bg-theme-dark">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-white text-center mb-12">
-            Galeria Técnica
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="rounded-xl overflow-hidden shadow-lg"
-            >
-              <img src="/patologia1.jpg" className="w-full h-64 object-cover" />
-            </motion.div>
-
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="rounded-xl overflow-hidden shadow-lg"
-            >
-              <img src="/patologia2.jpg" className="w-full h-64 object-cover" />
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* TIMELINE */}
-      <section className="py-28 bg-theme-dark border-t border-white/10">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-white text-center mb-16">
-            Nosso Processo
-          </h2>
-
-          <div className="space-y-12 max-w-3xl mx-auto">
-            {[
-              {
-                title: "1. Vistoria Técnica Detalhada",
-                desc: "Identificação visual, medições e levantamento das manifestações patológicas.",
-              },
-              {
-                title: "2. Ensaios e Testes",
-                desc: "Aplicação de ensaios técnicos conforme a ABNT, sempre que necessário.",
-              },
-              {
-                title: "3. Análise Diagnóstica",
-                desc: "Determinação da origem da patologia e identificação de falhas construtivas.",
-              },
-              {
-                title: "4. Laudo Técnico",
-                desc: "Emissão de relatório conclusivo detalhado com recomendações para solução.",
-              },
-            ].map((step, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: -40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6 + index * 0.2 }}
-                viewport={{ once: true }}
-                className="p-6 bg-white/10 border border-white/10 rounded-2xl backdrop-blur-xl"
+            {/* Bloco de Destaque / CTA Intermediário */}
+            <div className="bg-light p-10 rounded-3xl border border-gray-100 text-center">
+              <h3 className="text-2xl font-bold text-primary mb-4">
+                Solução Técnica
+              </h3>
+              <p className="text-gray-600 mb-8 leading-relaxed">
+                {cmsData.ctaText}
+              </p>
+              <a
+                href="/contato"
+                className="inline-block px-8 py-3 bg-primary text-white font-bold rounded-lg hover:bg-accent transition-colors shadow-lg"
               >
-                <h3 className="text-2xl font-bold text-primary">
-                  {step.title}
-                </h3>
-                <p className="text-gray-300 mt-2">{step.desc}</p>
-              </motion.div>
-            ))}
+                Solicitar Diagnóstico
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
       <CallToAction />
+      <Footer />
     </div>
   );
 };
+
+export default ServicePatologia;

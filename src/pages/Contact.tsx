@@ -1,264 +1,150 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect } from "react";
+import ContactForm from "../components/ContactForm";
+import Footer from "../components/Footer";
 import { motion } from "framer-motion";
-// import emailjs from '@emailjs/browser'; // Lógica de envio (pausada)
+import { FiMapPin, FiPhone, FiMail, FiClock } from "react-icons/fi";
 
-// Tipos de Status do Envio
-type FormStatus = "idle" | "loading" | "success" | "error";
-
-// Componente de Feedback Visual (Cores atualizadas)
-const FormStatusMessage = ({ status }: { status: FormStatus }) => {
-  if (status === "success") {
-    return (
-      <p className="mt-4 text-green-400">
-        Mensagem enviada com sucesso! Retornaremos em breve.
-      </p>
-    );
-  }
-  if (status === "error") {
-    return (
-      <p className="mt-4 text-red-400">
-        Houve um erro ao enviar. Tente novamente mais tarde.
-      </p>
-    );
-  }
-  return null;
-};
-
-export const ContactPage = () => {
-  const form = useRef<HTMLFormElement>(null);
-  const [status, setStatus] = useState<FormStatus>("idle");
-
-  // const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-  // const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-  // const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-  const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setStatus("loading");
-
-    // Simulação de envio (como combinado)
-    alert("Layout do formulário pronto. A lógica de envio será conectada.");
-    setStatus("success"); // Simula sucesso
-    form.current?.reset();
-
-    // Lógica real do EmailJS (comentada)
-    /*
-    if (!serviceID || !templateID || !publicKey) {
-      console.error("EmailJS .env chaves não configuradas.");
-      setStatus('error');
-      return;
-    }
-    // ... (resto da lógica)
-    */
-  };
+const ContactPage: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.title = "Contato | Alves Martins Engenharia";
+  }, []);
 
   return (
-    // --- ATUALIZADO: Fundo 'bg-theme-dark' ---
-    <div className="bg-theme-dark">
-      {/* Hero (Fundo 'bg-theme-dark') */}
-      <section className="py-40 bg-theme-dark">
-        <motion.div
-          className="container mx-auto px-6 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h1 className="text-5xl font-bold text-white mb-4">
-            Entre em Contato
-          </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Estamos prontos para analisar sua demanda.
-          </p>
-        </motion.div>
-      </section>
+    <div className="bg-[#051A30] min-h-screen flex flex-col text-white font-body">
+      {/* HEADER SURREAL */}
+      <header className="relative py-24 lg:py-32 overflow-hidden">
+        {/* Fundo Animado */}
+        <div className="absolute inset-0 bg-surreal-gradient bg-[length:400%_400%] animate-gradient-xy" />
+        <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
 
-      {/* Seção do Formulário e Informações */}
-      <section className="py-20">
-        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* Coluna 1: Formulário (Dark Mode) */}
+        <div className="relative z-10 container max-w-7xl mx-auto px-6 text-center">
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-5xl md:text-7xl font-heading font-extrabold text-white mb-6 drop-shadow-2xl"
+          >
+            Vamos Iniciar seu <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-white">
+              Diagnóstico Técnico
+            </span>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="text-xl text-blue-100 max-w-2xl mx-auto"
+          >
+            Canais diretos para orçamentos, dúvidas e consultorias. Sua obra e
+            seu patrimônio em mãos especializadas.
+          </motion.p>
+        </div>
+      </header>
+
+      {/* CONTEÚDO PRINCIPAL */}
+      <div className="flex-grow container max-w-7xl mx-auto px-6 -mt-16 relative z-20 pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+          {/* COLUNA DA ESQUERDA: Infos (Glass Card Escuro) */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 }}
+            className="lg:col-span-5 bg-[#0A2B4D]/80 backdrop-blur-xl border border-white/10 p-10 rounded-3xl shadow-2xl flex flex-col justify-between h-full"
           >
-            <h2 className="text-3xl font-bold text-white mb-6">
-              Envie sua Mensagem
-            </h2>
-            <form ref={form} onSubmit={sendEmail} className="space-y-5">
-              <div>
-                <label
-                  htmlFor="user_name"
-                  className="block text-sm font-medium text-gray-400 mb-1"
-                >
-                  Nome Completo
-                </label>
-                <input
-                  type="text"
-                  name="user_name"
-                  id="user_name"
-                  required
-                  placeholder="Seu nome"
-                  className="w-full px-4 py-3 border border-gray-700 rounded-md shadow-sm 
-                             bg-accent text-white placeholder-gray-500
-                             focus:ring-primary focus:border-primary"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="user_email"
-                  className="block text-sm font-medium text-gray-400 mb-1"
-                >
-                  E-mail
-                </label>
-                <input
-                  type="email"
-                  name="user_email"
-                  id="user_email"
-                  required
-                  placeholder="seu@email.com"
-                  className="w-full px-4 py-3 border border-gray-700 rounded-md shadow-sm 
-                             bg-accent text-white placeholder-gray-500
-                             focus:ring-primary focus:border-primary"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="subject"
-                  className="block text-sm font-medium text-gray-400 mb-1"
-                >
-                  Assunto
-                </label>
-                <input
-                  type="text"
-                  name="subject"
-                  id="subject"
-                  required
-                  placeholder="Inspeção, Avaliação, etc."
-                  className="w-full px-4 py-3 border border-gray-700 rounded-md shadow-sm 
-                             bg-accent text-white placeholder-gray-500
-                             focus:ring-primary focus:border-primary"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-gray-400 mb-1"
-                >
-                  Mensagem
-                </label>
-                <textarea
-                  name="message"
-                  id="message"
-                  rows={5}
-                  required
-                  placeholder="Descreva sua necessidade..."
-                  className="w-full px-4 py-3 border border-gray-700 rounded-md shadow-sm 
-                             bg-accent text-white placeholder-gray-500
-                             focus:ring-primary focus:border-primary"
-                ></textarea>
-              </div>
+            <div>
+              <h3 className="text-2xl font-heading font-bold text-accent-cyan mb-8 border-b border-white/10 pb-4">
+                Informações de Contato
+              </h3>
 
-              <div>
-                <button
-                  type="submit"
-                  disabled={status === "loading"}
-                  className="w-full bg-primary text-white font-bold py-3 px-6 rounded-md shadow-lg 
-                             hover:bg-accent transition-all duration-300 
-                             disabled:bg-gray-500"
-                >
-                  {status === "loading" ? "Enviando..." : "Enviar Mensagem"}
-                </button>
-              </div>
-            </form>
-            <FormStatusMessage status={status} />
-          </motion.div>
+              <div className="space-y-8">
+                <div className="flex items-start space-x-5 group">
+                  <div className="p-4 bg-accent/20 rounded-xl text-accent-cyan group-hover:bg-accent-cyan group-hover:text-primary transition-all duration-300">
+                    <FiPhone className="text-2xl" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-400 font-bold uppercase tracking-wide">
+                      Ligue Agora
+                    </p>
+                    <p className="text-xl font-medium text-white">
+                      (11) 94788-4185
+                    </p>
+                    <p className="text-sm text-accent-cyan mt-1">
+                      WhatsApp Disponível
+                    </p>
+                  </div>
+                </div>
 
-          {/* Coluna 2: Informações de Contato (Dark Mode) */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <h2 className="text-3xl font-bold text-white mb-6">Informações</h2>
-            <div className="space-y-6">
-              <div className="flex items-start">
-                <svg
-                  className="w-6 h-6 text-primary mr-4 mt-1 flex-shrink-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-                <div>
-                  <h4 className="text-xl font-semibold text-white">
-                    Localização
-                  </h4>
-                  [cite_start]
-                  <p className="text-gray-300">
-                    Penha, São Paulo/SP [cite: 12]
-                  </p>
+                <div className="flex items-start space-x-5 group">
+                  <div className="p-4 bg-accent/20 rounded-xl text-accent-cyan group-hover:bg-accent-cyan group-hover:text-primary transition-all duration-300">
+                    <FiMail className="text-2xl" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-400 font-bold uppercase tracking-wide">
+                      E-mail Oficial
+                    </p>
+                    <p className="text-lg font-medium text-white break-all">
+                      engdanilogmartins@gmail.com
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-start">
-                <svg
-                  className="w-6 h-6 text-primary mr-4 mt-1 flex-shrink-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.04 11.04 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498A1 1 0 0119 15.22V19a2 2 0 01-2 2h-1C6.04 21 3 17.96 3 14V5z"
-                  />
-                </svg>
-                <div>
-                  <h4 className="text-xl font-semibold text-white">Telefone</h4>
-                  [cite_start]
-                  <p className="text-gray-300">(11) 94788-4165 [cite: 8, 32]</p>
+
+                <div className="flex items-start space-x-5 group">
+                  <div className="p-4 bg-accent/20 rounded-xl text-accent-cyan group-hover:bg-accent-cyan group-hover:text-primary transition-all duration-300">
+                    <FiMapPin className="text-2xl" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-400 font-bold uppercase tracking-wide">
+                      Localização
+                    </p>
+                    <p className="text-lg font-medium text-white">
+                      Penha — São Paulo/SP
+                    </p>
+                    <p className="text-sm text-gray-400">
+                      Atendemos toda a capital e região.
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-start">
-                <svg
-                  className="w-6 h-6 text-primary mr-4 mt-1 flex-shrink-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  />
-                </svg>
-                <div>
-                  <h4 className="text-xl font-semibold text-white">E-mail</h4>
-                  [cite_start]
-                  <p className="text-gray-300">
-                    engdanilogmartins@gmail.com [cite: 10, 33]
-                  </p>
+
+                <div className="flex items-start space-x-5 group">
+                  <div className="p-4 bg-accent/20 rounded-xl text-accent-cyan group-hover:bg-accent-cyan group-hover:text-primary transition-all duration-300">
+                    <FiClock className="text-2xl" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-400 font-bold uppercase tracking-wide">
+                      Horário
+                    </p>
+                    <p className="text-lg font-medium text-white">
+                      Seg - Sex: 08h às 18h
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
+
+            <div className="mt-12 pt-8 border-t border-white/10">
+              <p className="text-gray-400 text-sm">
+                Nosso time técnico analisa cada solicitação com rigor para
+                fornecer o orçamento mais adequado à sua necessidade.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* COLUNA DA DIREITA: Formulário (Glass Card Claro) */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 }}
+            className="lg:col-span-7 bg-white rounded-3xl shadow-2xl p-2"
+          >
+            <ContactForm />
           </motion.div>
         </div>
-      </section>
+      </div>
+
+      <Footer />
     </div>
   );
 };
+
+export default ContactPage;

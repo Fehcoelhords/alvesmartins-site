@@ -1,159 +1,190 @@
-import React, { useRef } from "react";
-import { About } from "../components/About";
-import { motion, useScroll, useTransform } from "framer-motion";
+import React, { useEffect } from "react";
+import CallToAction from "../components/CallToAction";
+import Footer from "../components/Footer";
+import { motion } from "framer-motion";
+import {
+  FaBalanceScale,
+  FaHardHat,
+  FaMicroscope,
+  FaHandshake,
+} from "react-icons/fa";
 
-const AboutPage = () => {
-  // --- Scroll Hooks para seções adicionais ---
-  const missionRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress: missionProgress } = useScroll({
-    target: missionRef,
-    offset: ["start end", "center center"],
-  });
+const AboutPage: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.title = "Quem Somos | Alves Martins Engenharia";
+  }, []);
 
-  const scaleMission = useTransform(missionProgress, [0, 1], [0.8, 1]);
-  const opacityMission = useTransform(missionProgress, [0, 1], [0, 1]);
-  const xMission = useTransform(missionProgress, [0, 1], ["-50px", "0px"]);
+  const values = [
+    {
+      icon: <FaBalanceScale />,
+      title: "Imparcialidade",
+      desc: "Nossos laudos são documentos técnicos isentos, sem viés comercial, focados na verdade real do imóvel.",
+    },
+    {
+      icon: <FaMicroscope />,
+      title: "Rigor Científico",
+      desc: "Utilizamos metodologia inferencial estatística e equipamentos de precisão para diagnósticos.",
+    },
+    {
+      icon: <FaHardHat />,
+      title: "Segurança",
+      desc: "Identificamos riscos construtivos para proteger a integridade física dos usuários e o patrimônio.",
+    },
+    {
+      icon: <FaHandshake />,
+      title: "Transparência",
+      desc: "Linguagem clara e acessível, traduzindo o 'engenheirês' para que o cliente tome decisões seguras.",
+    },
+  ];
 
   return (
-    <main className="flex flex-col flex-grow bg-gray-50 overflow-hidden">
-      {/* --- Seção principal: About animado --- */}
-      <About />
-
-      {/* --- Seção Missão, Visão e Valores (Animada) --- */}
-      <motion.section
-        ref={missionRef}
-        style={{ scale: scaleMission, opacity: opacityMission, x: xMission }}
-        className="py-20 bg-gray-50 relative overflow-hidden"
-      >
-        {/* Linhas técnicas de background (efeito engenharia) */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="w-full h-full bg-grid-pattern opacity-10" />
-        </div>
-
-        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center relative z-10">
+    <div className="bg-white">
+      {/* HERO SECTION ANIMADO */}
+      <header className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden bg-primary">
+        {/* Background Animado */}
+        <div className="absolute inset-0 opacity-20">
           <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="p-6 bg-white rounded-2xl shadow-2xl hover:shadow-3xl transition-shadow duration-500"
-          >
-            <h3 className="text-xl font-semibold text-primary mb-4">Missão</h3>
-            <p className="text-gray-600">
-              Fornecer soluções de engenharia diagnóstica precisas e confiáveis,
-              garantindo segurança e eficiência em cada projeto.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-            className="p-6 bg-white rounded-2xl shadow-2xl hover:shadow-3xl transition-shadow duration-500"
-          >
-            <h3 className="text-xl font-semibold text-primary mb-4">Visão</h3>
-            <p className="text-gray-600">
-              Ser referência nacional em perícias, inspeções prediais e
-              avaliações técnicas, reconhecida pela qualidade e inovação.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
-            className="p-6 bg-white rounded-2xl shadow-2xl hover:shadow-3xl transition-shadow duration-500"
-          >
-            <h3 className="text-xl font-semibold text-primary mb-4">Valores</h3>
-            <p className="text-gray-600">
-              Ética, transparência, inovação e compromisso com a excelência em
-              cada serviço prestado.
-            </p>
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* --- Seção Diferenciais (Com efeitos exagerados) --- */}
-      <section className="py-20 bg-white relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <motion.div
-            initial={{ rotate: 45, scale: 0 }}
-            whileInView={{ rotate: 0, scale: 1 }}
-            transition={{ duration: 1, ease: "easeInOut" }}
-            className="w-1/2 h-1/2 border-t-4 border-r-4 border-primary opacity-20 absolute top-0 left-1/3"
-          />
-          <motion.div
-            initial={{ rotate: -45, scale: 0 }}
-            whileInView={{ rotate: 0, scale: 1 }}
-            transition={{ duration: 1, ease: "easeInOut", delay: 0.3 }}
-            className="w-1/2 h-1/2 border-b-4 border-l-4 border-primary opacity-20 absolute bottom-0 right-1/3"
+            className="absolute -top-[50%] -left-[50%] w-[200%] h-[200%] bg-[url('/grid-pattern.png')] bg-repeat"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 120, ease: "linear", repeat: Infinity }}
           />
         </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/80 to-white"></div>
 
-        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
-          <motion.div
-            initial={{ x: -100, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+        <div className="relative z-10 container max-w-5xl mx-auto px-6 text-center pt-20">
+          <motion.span
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-accent-cyan font-bold tracking-[0.3em] uppercase text-sm md:text-base mb-4 block"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-dark mb-6">
-              Nossos Diferenciais
+            Institucional
+          </motion.span>
+          <motion.h1
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            className="text-5xl md:text-7xl font-heading font-extrabold text-white mb-6 drop-shadow-2xl"
+          >
+            Excelência em <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-white">
+              Engenharia Diagnóstica
+            </span>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed"
+          >
+            Uma empresa fundamentada na técnica, na norma e na ética.
+          </motion.p>
+        </div>
+      </header>
+
+      {/* MISSÃO E VISÃO - INTERATIVO */}
+      <section className="py-24 container max-w-7xl mx-auto px-6">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="space-y-6 text-lg text-gray-700 leading-relaxed"
+          >
+            <h2 className="text-3xl font-heading font-bold text-primary border-l-4 border-accent pl-4">
+              Nossa Missão
             </h2>
-            <ul className="space-y-4 text-gray-600">
-              <li>✔ Equipe altamente qualificada e certificada</li>
-              <li>✔ Tecnologias modernas e equipamentos de ponta</li>
-              <li>✔ Relatórios detalhados e fundamentados em normas ABNT</li>
-              <li>✔ Atendimento personalizado e consultivo</li>
-              <li>✔ Mais de 10 anos de experiência no mercado</li>
-            </ul>
+            <p>
+              A <strong>Alves Martins Engenharia</strong> surgiu para preencher
+              uma lacuna no mercado: a necessidade de laudos técnicos que
+              fossem, ao mesmo tempo, profundos tecnicamente e compreensíveis
+              para quem precisa tomar a decisão.
+            </p>
+            <p>
+              Atuamos como parceiros estratégicos de condomínios, empresas,
+              advogados e investidores, fornecendo a base técnica necessária
+              para a valorização e manutenção de ativos imobiliários.
+            </p>
           </motion.div>
+
+          {/* Card Flutuante Tech */}
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
-            className="overflow-hidden rounded-2xl shadow-2xl hover:shadow-3xl"
+            initial={{ opacity: 0, rotateY: 90 }}
+            whileInView={{ opacity: 1, rotateY: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="relative bg-gradient-to-br from-primary to-primary-dark p-10 rounded-2xl shadow-2xl text-white overflow-hidden group"
           >
-            <img
-              src="https://images.unsplash.com/photo-1581092795366-07c5b510b6c4?auto=format&fit=crop&w=800&q=80"
-              alt="Diferenciais Alves Martins"
-              className="w-full h-full object-cover aspect-square hover:scale-105 transition-transform duration-500"
-            />
+            <div className="absolute top-0 right-0 w-40 h-40 bg-accent-cyan/20 rounded-full blur-3xl group-hover:bg-accent-cyan/30 transition-all"></div>
+            <h3 className="text-2xl font-bold mb-4 relative z-10">
+              Visão de Futuro
+            </h3>
+            <p className="opacity-90 relative z-10">
+              Ser referência estadual em patologia das construções e avaliações
+              imobiliárias, reconhecida pela precisão dos dados e pela inovação
+              nos processos de vistoria.
+            </p>
+            <div className="mt-8 flex items-center gap-4 relative z-10">
+              <div className="h-1 flex-1 bg-white/20 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full bg-accent-cyan"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "100%" }}
+                  transition={{ duration: 1.5, delay: 0.5 }}
+                />
+              </div>
+              <span className="text-accent-cyan font-bold">
+                Em constante evolução
+              </span>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* --- Call to Action animada --- */}
-      <motion.section
-        className="py-20 bg-primary text-white text-center overflow-hidden"
-        initial={{ scale: 0.9, opacity: 0 }}
-        whileInView={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1, ease: "easeInOut" }}
-      >
-        <motion.h2
-          className="text-3xl md:text-4xl font-bold mb-6"
-          initial={{ y: 50, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          Pronto para iniciar seu projeto?
-        </motion.h2>
-        <motion.p
-          className="mb-8"
-          initial={{ y: 50, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          Entre em contato com nossa equipe especializada e receba um orçamento
-          detalhado.
-        </motion.p>
-        <motion.a
-          href="/contato"
-          className="bg-white text-primary font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl hover:bg-gray-100 transition-all duration-300 inline-block"
-          whileHover={{ scale: 1.05, rotate: 1 }}
-        >
-          Solicitar Orçamento
-        </motion.a>
-      </motion.section>
-    </main>
+      {/* VALORES */}
+      <section className="py-24 bg-light relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-200/20 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div className="container max-w-7xl mx-auto px-6 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-heading font-bold text-primary">
+              Pilares da Empresa
+            </h2>
+            <p className="text-gray-600 mt-4">
+              Os valores inegociáveis que sustentam cada laudo emitido.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {values.map((val, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -10 }}
+                className="bg-white/60 backdrop-blur-lg p-8 rounded-xl border border-white/50 shadow-card hover:shadow-neon transition-all duration-300 group"
+              >
+                <div className="text-4xl text-primary mb-6 group-hover:text-accent-cyan transition-colors group-hover:scale-110 transform duration-300 origin-left">
+                  {val.icon}
+                </div>
+                <h3 className="text-xl font-bold text-primary mb-3">
+                  {val.title}
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {val.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <CallToAction />
+      <Footer />
+    </div>
   );
 };
 

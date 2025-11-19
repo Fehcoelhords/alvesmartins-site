@@ -1,302 +1,246 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { motion, Variants, AnimatePresence } from "framer-motion";
-import { AnimatedHamburgerIcon } from "./AnimatedHamburgerIcon";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import AnimatedHamburgerIcon from "./AnimatedHamburgerIcon";
+import { FaChevronDown } from "react-icons/fa";
 
-import { BuildingIcon } from "../assets/icons/BuildingIcon";
-import { RulerIcon } from "../assets/icons/RulerIcon";
-import { SearchIcon } from "../assets/icons/SearchIcon";
+const Navbar: React.FC = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Para Desktop Hover
+  const [mobileSubmenuOpen, setMobileSubmenuOpen] = useState(false); // Para Mobile Click
 
-// Ícone seta com mais estilo
-const CaretDownIcon = ({ isOpen }: { isOpen?: boolean }) => (
-  <motion.svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 20 20"
-    fill="currentColor"
-    animate={{ rotate: isOpen ? 180 : 0, scale: isOpen ? 1.15 : 1 }}
-    transition={{ duration: 0.35, ease: "easeOut" }}
-    className="w-5 h-5 ml-1 text-dark group-hover:text-primary drop-shadow-md"
-  >
-    <path
-      fillRule="evenodd"
-      d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.23 8.29a.75.75 0 01.02-1.06z"
-      clipRule="evenodd"
-    />
-  </motion.svg>
-);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-export const Navbar = () => {
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [isDesktopServicesOpen, setIsDesktopServicesOpen] = useState(false);
+  // Detectar Scroll
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  const navLinks = [
-    { title: "Home", path: "/" },
-    { title: "Sobre", path: "/sobre" },
-    { title: "Serviços", path: "/servicos" },
-    { title: "Blog", path: "/blog" },
-  ];
+  // Fechar menu ao mudar de rota
+  useEffect(() => {
+    setIsMenuOpen(false);
+    setMobileSubmenuOpen(false);
+  }, [location]);
 
-  const premiumServicesLinks = [
-    {
-      title: "Perícia em Avaliação de imóveis",
-      description: "Avaliações técnicas e precisas.",
-      icon: <RulerIcon />,
-      path: "/servicos/avaliacao-de-imoveis",
-    },
-    {
-      title: "Laudos Técnicos",
-      description: "Análises profundas e investigação.",
-      icon: <SearchIcon />,
-      path: "/servicos/pericia-manifestacoes-patologicas",
-    },
-    {
-      title: "Inspeção Predial",
-      description: "Diagnóstico completo da edificação.",
-      icon: <BuildingIcon />,
-      path: "/servicos/inspecao-predial",
-    },
-  ];
-
-  // 👉 ANIMAÇÃO EXAGERADA DO DROPDOWN — MUITO LUXO
-  const dropdownVariants: Variants = {
-    closed: {
-      opacity: 0,
-      y: -20,
-      scale: 0.95,
-      filter: "blur(6px)",
-      pointerEvents: "none",
-      transition: { duration: 0.35, ease: "easeInOut" },
-    },
-    open: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      filter: "blur(0px)",
-      pointerEvents: "auto",
-      transition: {
-        duration: 0.45,
-        ease: [0.16, 1, 0.3, 1], // curva mais luxuosa
-      },
-    },
+  // Função para scroll suave até a seção
+  const handleScrollToSection = (sectionId: string) => {
+    if (location.pathname !== "/") {
+      navigate("/");
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) element.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    } else {
+      const element = document.getElementById(sectionId);
+      if (element) element.scrollIntoView({ behavior: "smooth" });
+    }
+    setIsMenuOpen(false);
   };
 
-  // 👉 MOBILE MENU – animação bem suave
-  const mobileMenuVariants: Variants = {
-    open: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.4, ease: "easeOut" },
+  const services = [
+    { name: "Avaliação de Imóveis", path: "/servicos/avaliacao-de-imoveis" },
+    { name: "Inspeção Predial", path: "/servicos/inspecao-predial" },
+    {
+      name: "Patologia das Construções",
+      path: "/servicos/patologia-das-construcoes",
     },
-    closed: {
-      opacity: 0,
-      y: -20,
-      transition: { duration: 0.3, ease: "easeIn" },
-    },
-  };
-
-  const closeAllMenus = () => setIsMobileOpen(false);
+  ];
 
   return (
-    <nav className="sticky top-4 z-[9999] w-full px-6">
-      <div className="container mx-auto relative">
-        {/* NAVBAR — VIDRO FOSCO LUXUOSO */}
-        <motion.div
-          initial={{ opacity: 0, y: -20, filter: "blur(8px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="
-            w-full flex justify-between items-center 
-            py-3 px-6 rounded-2xl shadow-2xl 
-            bg-white/20 backdrop-blur-xl 
-            border border-white/40 
-            ring-1 ring-white/10
-          "
-          style={{
-            WebkitBackdropFilter: "blur(14px)",
-            backdropFilter: "blur(14px)",
-          }}
-        >
-          {/* LOGO */}
+    <nav
+      className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-500 ${
+        isScrolled || isMenuOpen
+          ? "bg-[#0A2B4D]/95 backdrop-blur-lg shadow-lg py-3 border-b border-white/10"
+          : "bg-transparent py-6"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        {/* LOGO */}
+        <Link to="/" className="flex items-center gap-3 group z-50 relative">
+          <img
+            src="/logotipo.png"
+            alt="Alves Martins"
+            className="h-10 md:h-12 w-auto brightness-0 invert transition-transform group-hover:scale-105"
+          />
+          <div className="flex flex-col text-white">
+            <span className="font-heading font-bold text-lg leading-none tracking-wide">
+              ALVES MARTINS
+            </span>
+            <span className="font-body text-[10px] font-medium tracking-[0.3em] text-accent-cyan uppercase">
+              Engenharia
+            </span>
+          </div>
+        </Link>
+
+        {/* ================= DESKTOP MENU ================= */}
+        <div className="hidden lg:flex items-center gap-8">
+          {/* Link Home */}
           <Link
             to="/"
-            className="flex items-center gap-3"
-            onClick={closeAllMenus}
+            className="text-sm font-bold text-white uppercase tracking-wider hover:text-accent-cyan transition-colors"
           >
-            <img src="/logotipo.png" className="h-12 drop-shadow-lg" />
-
-            <div className="leading-5">
-              <span className="block text-xl font-bold text-dark drop-shadow-sm">
-                Alves Martins
-              </span>
-              <span className="block text-xs text-blue-500 tracking-wide">
-                Engenharia & Construção
-              </span>
-            </div>
+            Home
           </Link>
 
-          {/* Links Desktop */}
-          <div className="hidden md:flex flex-1 justify-center space-x-8 items-center">
-            {navLinks.map((link) => (
-              <div
-                key={link.title}
-                className="relative group text-dark hover:text-primary transition-colors"
-              >
-                {/* TRIGGER — NÃO FECHA SOZINHO */}
-                <div
-                  onMouseEnter={() =>
-                    link.title === "Serviços" && setIsDesktopServicesOpen(true)
-                  }
+          {/* Dropdown Serviços */}
+          <div
+            className="relative group"
+            onMouseEnter={() => setIsDropdownOpen(true)}
+            onMouseLeave={() => setIsDropdownOpen(false)}
+          >
+            <button
+              onClick={() => handleScrollToSection("services")}
+              className="flex items-center gap-1 text-sm font-bold text-white uppercase tracking-wider hover:text-accent-cyan transition-colors py-4"
+            >
+              Serviços{" "}
+              <FaChevronDown
+                className={`text-xs transition-transform duration-300 ${
+                  isDropdownOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            <AnimatePresence>
+              {isDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full left-[-50px] w-64 pt-2"
                 >
-                  <Link
-                    to={link.path}
-                    className="font-medium flex items-center"
-                  >
-                    {link.title}
-                    {link.title === "Serviços" && (
-                      <CaretDownIcon isOpen={isDesktopServicesOpen} />
-                    )}
-                  </Link>
-                </div>
-
-                {/* HOVER BRIDGE — ESSA PARTE EVITA QUE O DROPDOWN SUMA RÁPIDO */}
-                {link.title === "Serviços" && (
-                  <div
-                    className="absolute left-0 top-full w-full h-6"
-                    onMouseEnter={() => setIsDesktopServicesOpen(true)}
-                    onMouseLeave={() => setIsDesktopServicesOpen(false)}
-                  />
-                )}
-
-                {/* DROPDOWN PREMIUM */}
-                {link.title === "Serviços" && (
-                  <AnimatePresence>
-                    {isDesktopServicesOpen && (
-                      <motion.div
-                        className="absolute top-[calc(100%+6px)] left-1/2 -translate-x-1/2 w-96 
-                         bg-white/90 backdrop-blur-xl border border-white/40 rounded-2xl shadow-2xl 
-                         overflow-hidden"
-                        initial={{ opacity: 0, y: -12, scale: 0.98 }}
-                        animate={{
-                          opacity: 1,
-                          y: 0,
-                          scale: 1,
-                          transition: {
-                            duration: 0.25,
-                            ease: "easeOut",
-                          },
-                        }}
-                        exit={{
-                          opacity: 0,
-                          y: -10,
-                          scale: 0.97,
-                          transition: {
-                            duration: 0.2,
-                            ease: "easeIn",
-                          },
-                        }}
-                        onMouseEnter={() => setIsDesktopServicesOpen(true)}
-                        onMouseLeave={() => setIsDesktopServicesOpen(false)}
+                  <div className="bg-[#051A30]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-neon overflow-hidden p-2">
+                    {services.map((service) => (
+                      <Link
+                        key={service.path}
+                        to={service.path}
+                        className="block px-4 py-3 text-sm text-white hover:bg-accent/20 hover:text-accent-cyan rounded-lg transition-all"
                       >
-                        <div className="p-3">
-                          {premiumServicesLinks.map((service, i) => (
-                            <motion.div
-                              key={service.title}
-                              initial={{ opacity: 0, x: -10 }}
-                              animate={{
-                                opacity: 1,
-                                x: 0,
-                                transition: { delay: i * 0.08 },
-                              }}
+                        {service.name}
+                      </Link>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Link Sobre */}
+          <Link
+            to="/quem-somos"
+            className="text-sm font-bold text-white uppercase tracking-wider hover:text-accent-cyan transition-colors"
+          >
+            Sobre Nós
+          </Link>
+
+          {/* Botão CTA */}
+          <Link
+            to="/contato"
+            className="ml-4 px-6 py-2.5 rounded-lg bg-accent hover:bg-accent-hover text-white font-bold text-sm uppercase tracking-wide transition-all shadow-neon hover:shadow-lg hover:-translate-y-0.5"
+          >
+            Orçamento
+          </Link>
+        </div>
+
+        {/* ================= MOBILE TOGGLE ================= */}
+        <div className="lg:hidden z-50 relative">
+          <AnimatedHamburgerIcon
+            isOpen={isMenuOpen}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="text-white"
+          />
+        </div>
+
+        {/* ================= MOBILE MENU OVERLAY ================= */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, x: "100%" }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: "100%" }}
+              transition={{ type: "spring", stiffness: 100, damping: 20 }}
+              className="fixed inset-0 bg-[#051A30] z-40 flex flex-col pt-28 px-8 overflow-y-auto h-screen"
+            >
+              <div className="flex flex-col space-y-6">
+                <Link
+                  to="/"
+                  className="text-2xl font-heading font-bold text-white border-b border-white/10 pb-4"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Home
+                </Link>
+
+                {/* Mobile Dropdown Logic */}
+                <div>
+                  <button
+                    onClick={() => setMobileSubmenuOpen(!mobileSubmenuOpen)}
+                    className="w-full flex justify-between items-center text-2xl font-heading font-bold text-white border-b border-white/10 pb-4"
+                  >
+                    Serviços{" "}
+                    <FaChevronDown
+                      className={`text-lg transition-transform ${
+                        mobileSubmenuOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  <AnimatePresence>
+                    {mobileSubmenuOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden bg-white/5 rounded-b-xl"
+                      >
+                        <div className="flex flex-col p-4 space-y-4">
+                          <button
+                            onClick={() => handleScrollToSection("services")}
+                            className="text-left text-accent-cyan font-bold uppercase text-sm tracking-wider"
+                          >
+                            Ver Todos na Home
+                          </button>
+                          {services.map((service) => (
+                            <Link
+                              key={service.path}
+                              to={service.path}
+                              className="text-white/80 hover:text-white text-lg"
+                              onClick={() => setIsMenuOpen(false)}
                             >
-                              <Link
-                                to={service.path}
-                                className="flex items-center p-4 rounded-xl 
-                                 hover:bg-gray-100 transition-all"
-                              >
-                                <div className="text-primary">
-                                  {service.icon}
-                                </div>
-                                <div className="ml-3">
-                                  <p className="font-semibold text-sm">
-                                    {service.title}
-                                  </p>
-                                  <p className="text-xs text-gray-500">
-                                    {service.description}
-                                  </p>
-                                </div>
-                              </Link>
-                            </motion.div>
+                              {service.name}
+                            </Link>
                           ))}
                         </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
-                )}
+                </div>
+
+                <Link
+                  to="/quem-somos"
+                  className="text-2xl font-heading font-bold text-white border-b border-white/10 pb-4"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Sobre Nós
+                </Link>
+
+                <Link
+                  to="/contato"
+                  className="mt-8 w-full py-4 text-center rounded-xl bg-accent text-white font-bold text-xl shadow-lg"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Solicitar Orçamento
+                </Link>
               </div>
-            ))}
-          </div>
-
-          {/* BOTÃO ORÇAMENTO */}
-          <motion.div
-            className="hidden md:flex"
-            whileHover={{ scale: 1.07, y: -2 }}
-          >
-            <Link
-              to="/contato"
-              className="
-                flex items-center bg-primary text-white px-6 py-3 rounded-xl font-semibold
-                shadow-lg hover:shadow-2xl hover:bg-blue-700 transition-all
-              "
-            >
-              Orçamento →
-            </Link>
-          </motion.div>
-
-          {/* MOBILE HAMBURGER */}
-          <div className="md:hidden">
-            <button onClick={() => setIsMobileOpen(!isMobileOpen)}>
-              <AnimatedHamburgerIcon isOpen={isMobileOpen} isDark={true} />
-            </button>
-          </div>
-        </motion.div>
-
-        {/* MOBILE MENU */}
-        <motion.div
-          initial="closed"
-          animate={isMobileOpen ? "open" : "closed"}
-          variants={mobileMenuVariants}
-          className="
-            md:hidden absolute top-full w-full shadow-xl 
-            bg-white/90 backdrop-blur-xl mt-2 rounded-xl 
-            overflow-hidden border border-white/40
-          "
-        >
-          <div className="flex flex-col px-6 py-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.title}
-                to={link.path}
-                onClick={closeAllMenus}
-                className="text-dark font-medium hover:text-primary py-3 text-lg"
-              >
-                {link.title}
-              </Link>
-            ))}
-
-            <Link
-              to="/contato"
-              onClick={closeAllMenus}
-              className="
-                bg-gradient-to-r from-primary to-accent text-white 
-                text-center mt-4 px-6 py-3 rounded-xl font-semibold
-              "
-            >
-              Orçamento →
-            </Link>
-          </div>
-        </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </nav>
   );
 };
+
+export default Navbar;

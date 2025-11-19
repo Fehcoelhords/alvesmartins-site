@@ -1,262 +1,142 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Link } from "react-router-dom";
-import React, { useRef } from "react";
-import { CallToAction } from "../components/CallToAction";
-import { SearchIcon } from "../assets/icons/SearchIcon";
+import React, { useEffect } from "react";
+import { motion } from "framer-motion";
+import CallToAction from "../components/CallToAction";
+import Footer from "../components/Footer";
+import { GiSettingsKnobs, GiCheckMark, GiCalculator } from "react-icons/gi";
+import { FaImage } from "react-icons/fa"; // Ícone para representar o placeholder
 
-// Ícone de Check
-const CheckIcon = () => (
-  <svg
-    className="w-5 h-5 text-primary mr-3 flex-shrink-0"
-    fill="currentColor"
-    viewBox="0 0 20 20"
-  >
-    <path
-      fillRule="evenodd"
-      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-      clipRule="evenodd"
-    ></path>
-  </svg>
-);
+const ServiceAvaliacao: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.title = "Avaliação de Imóveis | Alves Martins Engenharia";
+  }, []);
 
-// Conteúdo da página
-const service = {
-  title: "Perícia em Avaliação de Imóveis",
-  subtitle:
-    "Determinando o valor justo do seu patrimônio com precisão técnica.",
-  description:
-    "Nossas avaliações seguem rigorosamente as normas da ABNT (NBR 14.653) para determinar o valor de mercado, o valor de liquidação forçada ou o valor de aluguel de propriedades. Essencial para processos judiciais, garantias, inventários e transações comerciais.",
-  items: [
-    "Avaliação para fins judiciais (desapropriações, partilhas).",
-    "Definição de valor para compra e venda.",
-    "Garantias bancárias e financiamentos.",
-  ],
-  image: "/page-service-fundo.jpg",
-};
-
-export const ServiceAvaliacao = () => {
-  const heroRef = useRef(null);
-  const contentRef = useRef(null);
-
-  // Parallax
-  const { scrollYProgress: heroScroll } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const backgroundY = useTransform(heroScroll, [0, 1], ["0%", "30%"]);
-
-  // Entrada animada do conteúdo
-  const { scrollYProgress: contentScroll } = useScroll({
-    target: contentRef,
-    offset: ["start end", "center center"],
-    once: true,
-  });
-  const contentX = useTransform(contentScroll, [0, 1], ["-50px", "0px"]);
-  const contentOpacity = useTransform(contentScroll, [0, 1], [0.3, 1]);
+  // --- DADOS PROVISÓRIOS (PLACEHOLDER) ---
+  const cmsData = {
+    heroTitle: "Título Principal do Serviço de Avaliação",
+    heroSubtitle:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    introTitle: "Subtítulo Explicativo sobre o Serviço",
+    introText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim. Phasellus molestie magna non est bibendum non venenatis nisl tempor. Suspendisse dictum feugiat nisl ut dapibus.",
+    methodologyTitle: "Metodologia Aplicada",
+    methodologyText:
+      "Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Cras justo odio, dapibus ac facilisis in, egestas eget quam.",
+    applications: [
+      "Aplicação ou Benefício 1",
+      "Aplicação ou Benefício 2",
+      "Aplicação ou Benefício 3",
+      "Aplicação ou Benefício 4",
+      "Aplicação ou Benefício 5",
+    ],
+  };
 
   return (
-    <div className="bg-theme-dark text-white">
-      {/* HERO PREMIUM COM PARALLAX */}
-      <section ref={heroRef} className="relative py-40 overflow-hidden">
-        <motion.div
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: `url(${service.image})`,
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            y: backgroundY,
-          }}
-        />
-        <div className="absolute inset-0 bg-theme-dark/70 backdrop-blur-sm z-10"></div>
+    <div className="bg-white font-body">
+      {/* HERO SECTION */}
+      <header className="relative h-[70vh] min-h-[600px] flex items-center overflow-hidden bg-[#0A2B4D]">
+        {/* Background Animado */}
+        <div className="absolute inset-0">
+          {/* Imagem de fundo Genérica */}
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-luminosity" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A2B4D] via-[#0A2B4D]/90 to-[#0A2B4D]/60" />
+        </div>
 
-        <motion.div
-          className="container mx-auto px-6 text-center relative z-20"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h1 className="text-5xl font-bold text-white mb-4">
-            {service.title}
-          </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            {service.subtitle}
-          </p>
-        </motion.div>
-      </section>
-
-      {/* CONTEÚDO PRINCIPAL */}
-      <section ref={contentRef} className="py-20 bg-theme-dark overflow-hidden">
-        <div className="container mx-auto px-6">
+        <div className="relative z-10 container max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center pt-20">
           <motion.div
-            className="grid grid-cols-1 lg:grid-cols-3 gap-12"
-            style={{ x: contentX, opacity: contentOpacity }}
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
           >
-            {/* Texto principal */}
-            <div className="lg:col-span-2">
-              <h2 className="text-3xl font-bold text-white mb-6">
-                Sobre este Serviço
-              </h2>
-
-              <p className="text-gray-300 leading-relaxed text-lg mb-8">
-                {service.description}
-              </p>
-
-              <h3 className="text-2xl font-bold text-white mb-6">
-                O que entregamos
-              </h3>
-
-              <ul className="space-y-4">
-                {service.items.map((item) => (
-                  <motion.li
-                    key={item}
-                    className="flex items-center text-gray-200 text-lg"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5 }}
-                    viewport={{ once: true, amount: 0.5 }}
-                  >
-                    <CheckIcon />
-                    <span>{item}</span>
-                  </motion.li>
-                ))}
-              </ul>
+            <div className="flex items-center gap-2 text-accent-cyan font-bold tracking-widest uppercase text-sm mb-4">
+              <GiSettingsKnobs className="text-lg" /> Categoria do Serviço
             </div>
+            <h1 className="text-4xl md:text-6xl font-heading font-extrabold text-white mb-6 leading-tight drop-shadow-lg">
+              {cmsData.heroTitle}
+            </h1>
+            <p className="text-lg text-blue-100 leading-relaxed border-l-4 border-accent pl-4">
+              {cmsData.heroSubtitle}
+            </p>
+          </motion.div>
 
-            {/* CARD LATERAL GLASS */}
-            <div className="lg:col-span-1">
-              <div className="sticky top-32 p-8 rounded-2xl bg-white/10 backdrop-blur-lg border border-white/10">
-                <div className="text-primary">
-                  <SearchIcon />
-                </div>
-                <h3 className="text-2xl font-bold text-white mt-4 mb-4">
-                  Avaliação Precisa
-                </h3>
+          {/* PLACEHOLDER DE IMAGEM (Substituindo o gráfico) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="hidden md:flex justify-center items-center"
+          >
+            {/* Esta div representa o espaço onde o cliente colocará a imagem/arte dele */}
+            <div className="w-full max-w-md aspect-[4/3] bg-white/5 backdrop-blur-sm border-2 border-dashed border-white/30 rounded-2xl flex flex-col items-center justify-center text-white/50 hover:bg-white/10 transition-colors cursor-default">
+              <FaImage className="text-5xl mb-4" />
+              <span className="text-sm font-bold uppercase tracking-widest">
+                Espaço para Imagem do Cliente
+              </span>
+              <span className="text-xs mt-2 opacity-70">
+                (Ex: Gráfico, Foto ou Ilustração)
+              </span>
+            </div>
+          </motion.div>
+        </div>
+      </header>
 
-                <p className="text-gray-300 mb-6">
-                  Seguimos rigorosamente a ABNT NBR 14.653 para garantir
-                  precisão e segurança técnica.
+      {/* CONTEÚDO */}
+      <section className="py-24 bg-white relative">
+        <div className="max-w-5xl mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16">
+            {/* Texto Descritivo */}
+            <div className="space-y-8 text-gray-700 text-lg leading-relaxed">
+              <div>
+                <h2 className="text-3xl font-heading font-bold text-primary mb-4">
+                  {cmsData.introTitle}
+                </h2>
+                <p>{cmsData.introText}</p>
+                <p className="mt-4">
+                  Donec id elit non mi porta gravida at eget metus. Aenean
+                  lacinia bibendum nulla sed consectetur. Maecenas sed diam eget
+                  risus varius blandit sit amet non magna.
                 </p>
+              </div>
 
-                <motion.div whileHover={{ scale: 1.05 }}>
-                  <Link
-                    to="/contato"
-                    className="block w-full text-center bg-primary text-white font-semibold py-3 rounded-lg shadow-lg hover:bg-accent transition-colors"
-                  >
-                    Solicitar Orçamento
-                  </Link>
-                </motion.div>
+              <div className="bg-light p-8 rounded-xl border-l-4 border-accent shadow-sm">
+                <h3 className="text-xl font-heading font-bold text-primary mb-3">
+                  {cmsData.methodologyTitle}
+                </h3>
+                <p className="text-base">{cmsData.methodologyText}</p>
               </div>
             </div>
-          </motion.div>
-        </div>
-      </section>
 
-      {/* DESTAQUES NUMÉRICOS COM ANIMAÇÃO */}
-      <section className="py-20 bg-theme-dark/70 backdrop-blur-lg border-t border-white/10">
-        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-5xl font-bold text-primary">124</h3>
-            <p className="text-gray-300 mt-2">Projetos avaliados</p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-5xl font-bold text-primary">10+</h3>
-            <p className="text-gray-300 mt-2">Anos de experiência</p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-5xl font-bold text-primary">98%</h3>
-            <p className="text-gray-300 mt-2">Satisfação do cliente</p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* GALERIA TÉCNICA */}
-      <section className="py-20 bg-theme-dark">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-white text-center mb-12">
-            Galeria Técnica
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="rounded-xl overflow-hidden shadow-lg"
-            >
-              <img src="/galeria1.jpg" className="w-full h-64 object-cover" />
-            </motion.div>
-
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="rounded-xl overflow-hidden shadow-lg"
-            >
-              <img src="/galeria2.jpg" className="w-full h-64 object-cover" />
-            </motion.div>
+            {/* Lista de Aplicações */}
+            <div>
+              <h3 className="text-2xl font-heading font-bold text-primary mb-8">
+                Aplicações / Benefícios
+              </h3>
+              <div className="space-y-4">
+                {cmsData.applications.map((app, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="flex items-center gap-4 p-4 rounded-lg bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all hover:border-accent/30 group"
+                  >
+                    <div className="bg-accent/10 p-2 rounded-full text-accent group-hover:bg-accent group-hover:text-white transition-colors">
+                      <GiCheckMark />
+                    </div>
+                    <span className="font-medium text-gray-700">{app}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* TIMELINE PREMIUM */}
-      <section className="py-28 bg-theme-dark border-t border-white/10">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-white text-center mb-16">
-            Nosso Processo
-          </h2>
-
-          <div className="space-y-12 max-w-3xl mx-auto">
-            {[
-              {
-                title: "1. Diagnóstico In situ",
-                desc: "Visita técnica, levantamento fotográfico e coleta de dados.",
-              },
-              {
-                title: "2. Análises e Ensaios",
-                desc: "Ensaios laboratoriais, medições e estudos quantitativos.",
-              },
-              {
-                title: "3. Relatório Técnico",
-                desc: "Laudo detalhado com conclusões, croquis e recomendações.",
-              },
-              {
-                title: "4. Acompanhamento",
-                desc: "Apoio técnico pós-entrega para implementação e esclarecimentos.",
-              },
-            ].map((step, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: -40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6 + index * 0.2 }}
-                viewport={{ once: true }}
-                className="p-6 bg-white/10 border border-white/10 rounded-2xl backdrop-blur-xl"
-              >
-                <h3 className="text-2xl font-bold text-primary">
-                  {step.title}
-                </h3>
-                <p className="text-gray-300 mt-2">{step.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA FINAL */}
       <CallToAction />
+      <Footer />
     </div>
   );
 };
+
+export default ServiceAvaliacao;

@@ -1,68 +1,151 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Link } from "react-router-dom";
-import { useRef } from "react";
-import { Mail } from "lucide-react";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 
-export default function PremiumContactSection() {
-  const ref = useRef(null);
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "center center"],
+const ContactForm: React.FC = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
   });
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
 
-  const cardScale = useTransform(scrollYProgress, [0, 1], [0.9, 1]);
-  const cardOpacity = useTransform(scrollYProgress, [0, 1], [0.4, 1]);
-  const cardY = useTransform(scrollYProgress, [0, 1], [50, 0]);
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+
+    setTimeout(() => {
+      const subject = encodeURIComponent("Contato via Site - Alves Martins");
+      const body = encodeURIComponent(
+        `Nome: ${formData.name}\nEmail: ${formData.email}\nTelefone: ${formData.phone}\nMensagem: ${formData.message}`
+      );
+      window.location.href = `mailto:engdanilogmartins@gmail.com?subject=${subject}&body=${body}`;
+      setStatus("success");
+      setFormData({ name: "", email: "", phone: "", message: "" });
+      setTimeout(() => setStatus("idle"), 5000);
+    }, 1500);
+  };
+
+  const inputClasses =
+    "w-full bg-light border-b-2 border-gray-200 px-4 py-4 text-primary font-medium focus:border-accent-cyan focus:bg-blue-50/50 transition-all outline-none placeholder-gray-400 rounded-t-lg";
 
   return (
-    <section ref={ref} className="relative py-28 bg-white overflow-hidden">
-      {/* BACKGROUND DECORATIONS */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-accent/10 rounded-full blur-3xl" />
-      </div>
+    <div className="bg-white h-full rounded-[20px] p-8 md:p-10">
+      <h2 className="text-3xl font-heading font-bold text-primary mb-2">
+        Envie uma Mensagem
+      </h2>
+      <p className="text-gray-500 mb-8">
+        Preencha o formulário abaixo e entraremos em contato rapidamente.
+      </p>
 
-      <div className="container mx-auto px-6 relative z-10">
-        <motion.div
-          style={{ scale: cardScale, opacity: cardOpacity, y: cardY }}
-          className="max-w-3xl mx-auto backdrop-blur-xl bg-white/80 border border-white/30 p-12 rounded-3xl shadow-2xl"
-        >
-          {/* ICON */}
-          <div className="flex justify-center mb-6">
-            <div className="p-5 rounded-full bg-gradient-to-br from-primary to-accent shadow-xl">
-              <Mail className="w-10 h-10 text-white" />
-            </div>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="group">
+          <label
+            htmlFor="name"
+            className="block text-xs font-bold text-accent uppercase tracking-wider mb-1 group-focus-within:text-accent-cyan transition-colors"
+          >
+            Nome Completo
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            className={inputClasses}
+            placeholder="Ex: João Silva"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="group">
+            <label
+              htmlFor="email"
+              className="block text-xs font-bold text-accent uppercase tracking-wider mb-1 group-focus-within:text-accent-cyan transition-colors"
+            >
+              E-mail
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className={inputClasses}
+              placeholder="joao@email.com"
+            />
           </div>
 
-          {/* TITLE */}
-          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
-            Pronto para Iniciar Seu Projeto?
-          </h2>
-
-          {/* SUBTEXT */}
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-10">
-            Entre em contato e receba uma análise profissional e detalhada.
-            Nossa equipe está pronta para transformar sua ideia em realidade com
-            excelência e precisão.
-          </p>
-
-          {/* CTA BUTTON */}
-          <motion.div
-            whileHover={{ scale: 1.05, y: -3 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <Link
-              to="/contato"
-              className="flex items-center gap-2 justify-center w-max mx-auto px-8 py-4 rounded-xl text-white font-semibold text-lg shadow-xl bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary transition-all duration-300"
+          <div className="group">
+            <label
+              htmlFor="phone"
+              className="block text-xs font-bold text-accent uppercase tracking-wider mb-1 group-focus-within:text-accent-cyan transition-colors"
             >
-              Solicitar Orçamento
-              <span className="text-2xl">→</span>
-            </Link>
+              Telefone
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              className={inputClasses}
+              placeholder="(11) 99999-9999"
+            />
+          </div>
+        </div>
+
+        <div className="group">
+          <label
+            htmlFor="message"
+            className="block text-xs font-bold text-accent uppercase tracking-wider mb-1 group-focus-within:text-accent-cyan transition-colors"
+          >
+            Sua Necessidade
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            rows={4}
+            value={formData.message}
+            onChange={handleChange}
+            required
+            className={`${inputClasses} resize-none`}
+            placeholder="Descreva brevemente o serviço que você precisa..."
+          ></textarea>
+        </div>
+
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          type="submit"
+          disabled={status === "loading"}
+          className="w-full py-5 bg-gradient-to-r from-primary to-accent text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-neon transition-all disabled:opacity-70 mt-4"
+        >
+          {status === "loading" ? "Processando..." : "Enviar Solicitação"}
+        </motion.button>
+
+        {status === "success" && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-green-100 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-center font-medium text-sm"
+          >
+            Mensagem preparada! Abrindo seu e-mail...
           </motion.div>
-        </motion.div>
-      </div>
-    </section>
+        )}
+      </form>
+    </div>
   );
-}
+};
+
+export default ContactForm;

@@ -1,48 +1,56 @@
-import { motion, type Variants } from "framer-motion";
+import { motion, Variants } from "framer-motion";
+import React from "react";
 
-interface Props {
+interface AnimatedHamburgerIconProps {
   isOpen: boolean;
-  isDark: boolean;
+  onClick: () => void;
+  className?: string;
 }
 
-const topVariants: Variants = {
-  closed: { rotate: 0, y: 0 },
-  open: { rotate: 45, y: 8.5 },
+const top: Variants = {
+  closed: { rotate: 0, translateY: 0 },
+  open: { rotate: 45, translateY: 8 },
 };
 
-const middleVariants: Variants = {
+const middle: Variants = {
   closed: { opacity: 1 },
   open: { opacity: 0 },
 };
 
-const bottomVariants: Variants = {
-  closed: { rotate: 0, y: 0 },
-  open: { rotate: -45, y: -8.5 },
+const bottom: Variants = {
+  closed: { rotate: 0, translateY: 0 },
+  open: { rotate: -45, translateY: -8 },
 };
 
-export const AnimatedHamburgerIcon = ({ isOpen, isDark }: Props) => {
-  const colorClass = isDark ? "bg-dark" : "bg-white";
-
+const AnimatedHamburgerIcon: React.FC<AnimatedHamburgerIconProps> = ({
+  isOpen,
+  onClick,
+  className = "",
+}) => {
   return (
-    <div className="w-6 h-5 flex flex-col justify-between">
-      <motion.div
-        className={`h-0.5 w-full ${colorClass} rounded-sm`}
-        variants={topVariants}
+    <button
+      className={`p-2 focus:outline-none ${className}`}
+      onClick={onClick}
+      aria-label="Toggle Menu"
+    >
+      <motion.svg
+        width="32"
+        height="32"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={false}
         animate={isOpen ? "open" : "closed"}
-        transition={{ duration: 0.3 }}
-      />
-      <motion.div
-        className={`h-0.5 w-full ${colorClass} rounded-sm`}
-        variants={middleVariants}
-        animate={isOpen ? "open" : "closed"}
-        transition={{ duration: 0.2 }}
-      />
-      <motion.div
-        className={`h-0.5 w-full ${colorClass} rounded-sm`}
-        variants={bottomVariants}
-        animate={isOpen ? "open" : "closed"}
-        transition={{ duration: 0.3 }}
-      />
-    </div>
+      >
+        <motion.line x1="3" y1="6" x2="21" y2="6" variants={top} />
+        <motion.line x1="3" y1="12" x2="21" y2="12" variants={middle} />
+        <motion.line x1="3" y1="18" x2="21" y2="18" variants={bottom} />
+      </motion.svg>
+    </button>
   );
 };
+
+export default AnimatedHamburgerIcon;

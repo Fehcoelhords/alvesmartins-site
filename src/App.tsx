@@ -1,40 +1,29 @@
-import { Routes, Route, useLocation } from "react-router-dom";
-// import { TopBar } from './components/TopBar'; // REMOVIDO
-import { Navbar } from "./components/Navbar";
-import { Footer } from "./components/Footer";
-import { Home } from "./pages/Home";
+import { Routes, Route } from "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import ContactPage from "./pages/Contact";
 import AboutPage from "./pages/About";
-import { ServicesPage } from "./pages/Services";
-import { BlogPage } from "./pages/Blog";
-import { ContactPage } from "./pages/Contact";
-import { useEffect } from "react";
+import ServiceAvaliacao from "./pages/ServiceAvaliacao";
 
-import { ServiceAvaliacao } from "./pages/ServiceAvaliacao";
-import { ServiceInspecao } from "./pages/ServiceInspecao";
-import { ServicePatologia } from "./pages/ServicePatologia";
-
-// Componente para rolar a página para o topo ao navegar
-const ScrollToTop = () => {
-  const { pathname } = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-  return null;
-};
+// Placeholder para as outras páginas de serviço
+const ServiceInspecao = () => <ServiceAvaliacao />;
+const ServicePatologia = () => <ServiceAvaliacao />;
 
 function App() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="bg-white font-body text-primary antialiased selection:bg-accent selection:text-white">
       <ScrollToTop />
 
+      {/* Navbar Global: Fixo, funciona em todas as páginas */}
       <Navbar />
 
-      <div className="flex-grow">
+      <main className="w-full min-h-screen">
         <Routes>
-          {/* ... (Rotas) ... */}
           <Route path="/" element={<Home />} />
-          <Route path="/sobre" element={<AboutPage />} />
-          <Route path="/servicos" element={<ServicesPage />} />
+          <Route path="/quem-somos" element={<AboutPage />} />
+
+          {/* Rotas de Serviços */}
           <Route
             path="/servicos/avaliacao-de-imoveis"
             element={<ServiceAvaliacao />}
@@ -44,22 +33,13 @@ function App() {
             element={<ServiceInspecao />}
           />
           <Route
-            path="/servicos/pericia-manifestacoes-patologicas"
+            path="/servicos/patologia-das-construcoes"
             element={<ServicePatologia />}
           />
-          <Route path="/blog" element={<BlogPage />} />
+
           <Route path="/contato" element={<ContactPage />} />
-          <Route
-            path="/blog/:postId"
-            element={
-              <div className="pt-20 h-screen flex items-center justify-center">
-                Página de Post (Futuro CMS)
-              </div>
-            }
-          />
         </Routes>
-      </div>
-      <Footer />
+      </main>
     </div>
   );
 }

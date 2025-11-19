@@ -1,53 +1,25 @@
-import { useEffect, useRef } from "react";
+import { useAnimation, Variants } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
 
-// Lista de classes de animação válidas
-type AnimationClass =
-  | "fadeIn"
-  | "fadeInDown"
-  | "fadeInUp"
-  | "bounceIn"
-  | "bounceInLeft"
-  | "bounceInRight"
-  | "moveUp"
-  | "fadeBgColor"
-  | "tracking-in-contract-bck-top";
-
-export function useScrollAnimation(animationClass: AnimationClass) {
-  const ref = useRef<HTMLDivElement>(null);
+export const useScrollAnimation = (
+  variants: Variants,
+  triggerOnce = true,
+  threshold = 0.1
+) => {
+  const controls = useAnimation();
+  const [ref, inView] = useInView({
+    triggerOnce,
+    threshold,
+  });
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    function applyAnimation() {
-      el.classList.add("animate", animationClass);
+    if (inView) {
+      controls.start("visible");
+    } else if (!triggerOnce) {
+      controls.start("hidden");
     }
+  }, [controls, inView, triggerOnce]);
 
-    // 👉 1. Verifica se o elemento já está visível ao carregar a página
-    const rect = el.getBoundingClientRect();
-    const windowHeight = window.innerHeight;
-
-    if (rect.top < windowHeight && rect.bottom > 0) {
-      applyAnimation();
-    }
-
-    // 👉 2. Observa a entrada no viewport (scroll)
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            applyAnimation();
-            observer.unobserve(el); // anima apenas 1 vez
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    observer.observe(el);
-
-    return () => observer.disconnect();
-  }, [animationClass]);
-
-  return ref;
-}
+  return { ref, controls, variants };
+};

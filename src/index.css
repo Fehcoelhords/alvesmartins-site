@@ -1,160 +1,43 @@
-/* Importação das diretivas do Tailwind */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ================================
-   BASE GLOBAL
-   ================================ */
-@layer base {
-  body {
-    /* Fonte base do site -> Inter (font-sans) */
-    @apply font-sans antialiased text-dark;
-
-    /* COR DO FUNDO GRUDADA COM A IMAGEM DO HERO */
-    background-color: rgb(169, 171, 172);
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    /* Montserrat (font-heading) aplicada nos títulos */
-    @apply font-heading font-semibold text-dark;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
-/* ================================
-   ANIMAÇÕES (do seu hook useScrollAnimation)
-   ================================ */
-@keyframes fadeIn {
-  0%,
-  60% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+body {
+  @apply bg-white-pearl text-primary font-body antialiased;
+  overflow-x: hidden;
 }
 
-@keyframes fadeInDown {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Barra de Rolagem Personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a2b4d;
+}
+::-webkit-scrollbar-thumb {
+  background: #2e6da4;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00d4ff;
 }
 
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Classes Utilitárias de Vidro */
+.glass {
+  @apply bg-white/10 backdrop-blur-lg border border-white/20 shadow-glass;
 }
 
-@keyframes bounceIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.3);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  70% {
-    transform: scale(0.9);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+.glass-dark {
+  @apply bg-[#0A2B4D]/80 backdrop-blur-md border border-white/10 shadow-glass;
 }
 
-@keyframes bounceInLeft {
-  0% {
-    opacity: 0;
-    transform: translateX(-2000px);
-  }
-  60% {
-    transform: translateX(20px);
-  }
-  80% {
-    transform: translateX(-5px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes bounceInRight {
-  0% {
-    opacity: 0;
-    transform: translateX(2000px);
-  }
-  60% {
-    transform: translateX(-20px);
-  }
-  80% {
-    transform: translateX(5px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes tracking-in-contract-bck-top {
-  0% {
-    letter-spacing: 1em;
-    transform: translateZ(400px) translateY(-300px);
-    opacity: 0;
-  }
-  40% {
-    opacity: 0.6;
-  }
-  100% {
-    transform: translateZ(0) translateY(0);
-    opacity: 1;
-  }
-}
-
-/* ================================
-   CLASSES DE ANIMAÇÃO UTILIZADAS NO REACT
-   ================================ */
-.animate.fadeIn {
-  animation: fadeIn 1s both;
-}
-
-.animate.fadeInDown {
-  animation: fadeInDown 1s both;
-}
-
-.animate.fadeInUp {
-  animation: fadeInUp 1s both;
-}
-
-.animate.bounceIn {
-  animation: bounceIn 1s both;
-}
-
-.animate.bounceInLeft {
-  animation: bounceInLeft 1s both;
-}
-
-.animate.bounceInRight {
-  animation: bounceInRight 1s both;
-}
-
-.animate.tracking-in-contract-bck-top {
-  animation: tracking-in-contract-bck-top 1.2s cubic-bezier(0.1, 0.7, 0.3, 1)
-    both;
+/* Seleção de Texto */
+::selection {
+  @apply bg-accent text-white;
 }
